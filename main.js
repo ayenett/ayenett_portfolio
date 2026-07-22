@@ -1,6 +1,6 @@
-// Initialize Lenis
+// Initialize Lenis for Smooth Scrolling
 const lenis = new Lenis({
-  duration: 1.5,
+  duration: 1.5, // Slower, more elegant scroll
   easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   direction: 'vertical',
   gestureDirection: 'vertical',
@@ -20,194 +20,270 @@ gsap.ticker.add((time)=>{
 gsap.ticker.lagSmoothing(0);
 
 document.addEventListener('DOMContentLoaded', () => {
-    
     gsap.registerPlugin(ScrollTrigger);
 
-    // 1. Custom Cursor Logic
-    const cursorDot = document.querySelector('.cursor-dot');
-    const cursorOutline = document.querySelector('.cursor-outline');
-    const cursorText = document.querySelector('.cursor-text');
-    
-    // Track mouse position
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let outlineX = mouseX;
-    let outlineY = mouseY;
-    
-    window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        
-        // Immediate update for dot
-        gsap.to(cursorDot, {
-            x: mouseX,
-            y: mouseY,
-            duration: 0.1,
-            ease: "power2.out"
-        });
-    });
-
-    // Lerp animation for outline
-    gsap.ticker.add(() => {
-        const dt = 1.0 - Math.pow(1.0 - 0.15, gsap.ticker.deltaRatio());
-        outlineX += (mouseX - outlineX) * dt;
-        outlineY += (mouseY - outlineY) * dt;
-        
-        gsap.set(cursorOutline, {
-            x: outlineX,
-            y: outlineY
-        });
-    });
-
-    // Cursor Hover States
-    const magnetics = document.querySelectorAll('.magnetic');
-    const projects = document.querySelectorAll('[data-cursor="-project"]');
-
-    magnetics.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursorOutline.classList.add('hover-magnetic');
-            cursorDot.classList.add('hover-magnetic');
-        });
-        el.addEventListener('mouseleave', () => {
-            cursorOutline.classList.remove('hover-magnetic');
-            cursorDot.classList.remove('hover-magnetic');
-            gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: "power3.out" });
-        });
-        el.addEventListener('mousemove', (e) => {
-            const rect = el.getBoundingClientRect();
-            const relX = e.clientX - rect.left - (rect.width/2);
-            const relY = e.clientY - rect.top - (rect.height/2);
-            gsap.to(el, {
-                x: relX * 0.3,
-                y: relY * 0.3,
-                duration: 0.3,
-                ease: "power2.out"
-            });
-        });
-    });
-
-    projects.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursorOutline.classList.add('hover-project');
-            cursorDot.classList.add('hover-project');
-        });
-        el.addEventListener('mouseleave', () => {
-            cursorOutline.classList.remove('hover-project');
-            cursorDot.classList.remove('hover-project');
-        });
-    });
-
-    // Hide cursor when leaving window
-    document.addEventListener('mouseleave', () => {
-        cursorOutline.classList.add('cursor-hidden');
-        cursorDot.classList.add('cursor-hidden');
-    });
-    document.addEventListener('mouseenter', () => {
-        cursorOutline.classList.remove('cursor-hidden');
-        cursorDot.classList.remove('cursor-hidden');
-    });
-
-    // 2. Loading Sequence
-    // Prevent scrolling during load
-    lenis.stop();
-    
-    const tlLoader = gsap.timeline({
-        onComplete: () => {
-            lenis.start();
-        }
-    });
-
-    // Sequence
-    tlLoader.to('.loader-logo .char', {
-        y: 0,
-        stagger: 0.1,
-        duration: 1.2,
-        ease: "power4.out",
-        delay: 0.2
-    })
-    .to('.loader-logo', {
-        scale: 1.1,
-        duration: 1.5,
-        ease: "power2.inOut"
-    }, "-=0.5")
-    .to('.loader-overlay', {
-        yPercent: -100,
-        duration: 1.2,
-        ease: "power4.inOut"
-    }, "+=0.5")
-    // Reveal Hero
-    .from('.hero-headline-line', {
-        y: "110%",
-        stagger: 0.15,
-        duration: 1.5,
-        ease: "power4.out"
-    }, "-=0.6")
-    .to('.hero-intro.reveal-text, .hero-support.reveal-text', {
-        opacity: 1,
-        duration: 1
-    }, "-=1")
-    .to('nav.nav-hidden', {
-        opacity: 1,
-        duration: 1
-    }, "-=0.8")
-    .to('.scroll-indicator', {
-        opacity: 1,
-        duration: 1
-    }, "-=0.5");
-
-
-    // 3. Cinematic Scroll Interactions
-
-    // Blur Reveals for elements
-    gsap.utils.toArray('.blur-reveal').forEach(el => {
-        gsap.fromTo(el, 
-            { opacity: 0, filter: "blur(10px)", y: 50 },
-            {
-                opacity: 1,
-                filter: "blur(0px)",
-                y: 0,
-                duration: 1.2,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: el,
-                    start: "top 85%",
-                    toggleActions: "play none none reverse"
-                }
-            }
-        );
-    });
-
-    // Timeline Growth
-    const timelineLine = document.querySelector('.timeline-progress');
-    if (timelineLine) {
-        gsap.to(timelineLine, {
-            height: "100%",
-            ease: "none",
+    // 1. Reveal Animations for all sections
+    const revealElements = document.querySelectorAll('.reveal-up');
+    revealElements.forEach((el) => {
+        gsap.to(el, {
             scrollTrigger: {
-                trigger: ".timeline-track",
-                start: "top center",
-                end: "bottom center",
-                scrub: 0.5
-            }
+                trigger: el,
+                start: "top 85%", // Trigger when top of element hits 85% down viewport
+                end: "bottom top",
+                toggleActions: "play none none reverse"
+            },
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power3.out"
         });
-    }
+    });
 
-    // Parallax Project Backgrounds
-    gsap.utils.toArray('.project-fullscreen').forEach(section => {
-        const bg = section.querySelector('.project-bg');
+    // 2. Parallax Elements
+    const parallaxElements = document.querySelectorAll('[data-parallax]');
+    parallaxElements.forEach((el) => {
+        const speed = parseFloat(el.getAttribute('data-parallax'));
+        gsap.to(el, {
+            scrollTrigger: {
+                trigger: el,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            },
+            y: (i, target) => -ScrollTrigger.maxScroll(window) * speed,
+            ease: "none"
+        });
+    });
+
+    // --- 2. ABOUT JOURNEY (5 Stages) ---
+    const aboutJourney = document.getElementById('about-journey');
+    
+    if (aboutJourney) {
         
-        gsap.fromTo(bg,
-            { yPercent: -15 },
-            {
-                yPercent: 15,
+        // Stage 1: Pin the giant ABOUT ME text
+        const bgText = document.getElementById('about-bg-text');
+        if (bgText) {
+            gsap.to(bgText, {
+                scrollTrigger: {
+                    trigger: aboutJourney,
+                    start: "top top",
+                    end: "bottom top",
+                    pin: bgText,
+                    pinSpacing: false,
+                    scrub: true
+                },
+                opacity: 0, // slowly fade out as you leave the section
+                ease: "power1.inOut"
+            });
+        }
+
+        // Stage 2: Fixed Timeline Drawing
+        const journeyPath = document.getElementById('journey-path');
+        const timelineStage = document.getElementById('timeline-stage');
+        
+        if (journeyPath && timelineStage) {
+            // Function to safely calculate and apply dash array
+            const setupPath = () => {
+                const pathLength = journeyPath.getTotalLength();
+                // Set a massive dash array in CSS just in case, but overwrite it here with the exact length
+                journeyPath.style.strokeDasharray = pathLength;
+                journeyPath.style.strokeDashoffset = pathLength;
+            };
+            
+            // Wait a tick for SVG to render to get true length
+            setTimeout(setupPath, 100);
+            window.addEventListener('resize', setupPath);
+
+            gsap.to(journeyPath, {
+                strokeDashoffset: 0,
                 ease: "none",
                 scrollTrigger: {
-                    trigger: section,
+                    trigger: timelineStage,
+                    start: "top 60%", // Start drawing earlier
+                    end: "bottom 80%",
+                    scrub: 1
+                }
+            });
+
+            // Milestone Nodes and Cards
+            const nodes = document.querySelectorAll('.milestone-node');
+            const cards = document.querySelectorAll('.milestone-card');
+            
+            nodes.forEach((node, i) => {
+                const card = cards[i];
+                
+                // Pop node
+                gsap.from(node, {
+                    scale: 0,
+                    opacity: 0,
+                    duration: 0.6,
+                    ease: "back.out(2)",
+                    scrollTrigger: {
+                        trigger: node,
+                        start: "top 60%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+                
+                // Slide card
+                gsap.from(card, {
+                    y: 50,
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: node, // trigger on the node so they sync
+                        start: "top 60%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+
+                // Background Immersive Crossfade
+                const bgId = `bg-milestone-${card.dataset.index}`;
+                const bgImg = document.getElementById(bgId);
+                if (bgImg) {
+                    gsap.to(bgImg, {
+                        opacity: 0.8, // Fade in the background image
+                        scale: 1, // Slight zoom out effect as it appears
+                        duration: 1,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: node,
+                            start: "top 70%",
+                            end: "top 10%",
+                            toggleActions: "play reverse play reverse"
+                        }
+                    });
+                }
+
+                // Popups Animation
+                const popups = card.querySelectorAll('.milestone-popup');
+                if (popups.length > 0) {
+                    gsap.fromTo(popups, 
+                        { scale: 0.5, opacity: 0, y: 40 },
+                        {
+                            scale: 1,
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.8,
+                            stagger: 0.15,
+                            ease: "back.out(1.5)",
+                            scrollTrigger: {
+                                trigger: node,
+                                start: "top 70%", // Appear when coming into view
+                                end: "top 20%", // Disappear when leaving top
+                                toggleActions: "play reverse play reverse"
+                            }
+                        }
+                    );
+                }
+            });
+        }
+
+        // Stage 3: Achievement Cards Parallax
+        const achievementCards = document.querySelectorAll('.achievement-card');
+        achievementCards.forEach((card) => {
+            const speed = card.getAttribute('data-speed') || 1;
+            gsap.to(card, {
+                y: -100 * speed,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: card.parentElement,
                     start: "top bottom",
                     end: "bottom top",
                     scrub: true
                 }
+            });
+        });
+
+        // Stage 4: Statistics Counters
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target'));
+            gsap.to(counter, {
+                innerHTML: target,
+                duration: 2,
+                ease: "power2.out",
+                snap: { innerHTML: 1 }, // ensure it's an integer
+                scrollTrigger: {
+                    trigger: document.getElementById('statistics-stage'),
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        });
+
+        // Stage 5: Capabilities Badges Stagger
+        const badges = document.querySelectorAll('.capability-badge');
+        gsap.from(badges, {
+            y: 30,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "back.out(1.5)",
+            scrollTrigger: {
+                trigger: badges[0],
+                start: "top 85%",
+                toggleActions: "play none none reverse"
             }
-        );
+        });
+    } // <--- Added the missing closing brace here!
+
+    // --- 3. SELECTED WORK (Horizontal Scroll) ---
+    const workSection = document.getElementById('work');
+    const scrollContainer = document.getElementById('horizontal-scroll-container');
+    const horizontalTrack = document.getElementById('horizontal-track');
+    
+    if (workSection && scrollContainer && horizontalTrack) {
+        
+        // Calculate the total distance to move
+        // It's the full width of the track minus the viewport width
+        const getScrollAmount = () => {
+            let trackWidth = horizontalTrack.scrollWidth;
+            return -(trackWidth - window.innerWidth + (window.innerWidth * 0.1)); // Add a little buffer padding at the end
+        };
+
+        // Create the horizontal scroll animation
+        const tween = gsap.to(horizontalTrack, {
+            x: getScrollAmount,
+            ease: "none"
+        });
+
+        // Setup the ScrollTrigger to pin and scrub
+        ScrollTrigger.create({
+            trigger: workSection,
+            start: "top top",
+            end: () => `+=${getScrollAmount() * -1}`, // The pin duration equals the scroll distance
+            pin: true,
+            animation: tween,
+            scrub: 1, // Smooth scrubbing
+            invalidateOnRefresh: true // Recalculate on resize
+        });
+
+        // Entrance animation for cards when the section is reached
+        const cards = document.querySelectorAll('.horizontal-card');
+        gsap.from(cards, {
+            y: 100,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: workSection,
+                start: "top 70%",
+                toggleActions: "play none none reverse"
+            }
+        });
+    }
+
+    // --- 4. Custom Cursor Navigation Links interaction ---
+    const links = document.querySelectorAll('a, button, .project-card, .capability-badge, .horizontal-card');
+    links.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+            // Add custom cursor scale logic if needed
+        });
+        link.addEventListener('mouseleave', () => {
+            // Remove custom cursor scale logic if needed
+        });
     });
 });

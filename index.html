@@ -3,157 +3,711 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NESH® | Cinematic Portfolio</title>
+    <title>AYENETT | Webflow Applied Differently</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Using a sleek Grotesk/Inter font for the editorial look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <!-- Lenis Smooth Scroll CSS -->
     <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9F6F1;
+            color: #8E7E73;
+        }
+        
+        /* Soft, elegant glassmorphism matching the pink/pearly theme */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px rgba(225, 193, 182, 0.15);
+        }
+
+        .dark-glass-card {
+            background: rgba(142, 126, 115, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .text-outline {
+            text-shadow: 0px 4px 20px rgba(142, 126, 115, 0.2);
+        }
+
+        /* Hide scrollbar for clean look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F9F6F1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E1C1B6;
+            border-radius: 4px;
+        }
+
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        
+        .project-img-container {
+            overflow: hidden;
+            border-radius: 1.5rem;
+        }
+        
+        .project-img {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .project-card:hover .project-img {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
-<body>
-
-    <!-- Custom Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-outline">
-        <span class="cursor-text">VIEW</span>
-    </div>
-
-    <!-- Loading Sequence -->
-    <div class="loader-overlay">
-        <div class="loader-bg"></div>
-        <div class="loader-content">
-            <h1 class="loader-logo">
-                <span class="char">N</span>
-                <span class="char">E</span>
-                <span class="char">S</span>
-                <span class="char">H</span>
-            </h1>
-        </div>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="nav-hidden">
-        <div class="logo">
-            <a href="#" class="nav-link magnetic" data-cursor="-hidden">NESH®</a>
-        </div>
-        <div class="nav-links">
-            <a href="#about" class="nav-link magnetic" data-cursor="-hidden">About</a>
-            <a href="#projects" class="nav-link magnetic" data-cursor="-hidden">Projects</a>
-            <a href="#contact" class="nav-link magnetic" data-cursor="-hidden">Contact</a>
-        </div>
-    </nav>
+<body class="overflow-x-hidden selection:bg-[#E1C1B6] selection:text-white">
 
     <main id="smooth-wrapper">
         <div id="smooth-content">
 
-            <!-- Hero Section -->
-            <section class="hero" id="hero">
-                <div class="hero-content">
-                    <div class="hero-intro reveal-text">
-                        <span>AWWWARDS WINNING DEVELOPER</span>
-                    </div>
-                    
-                    <h1 class="hero-headline">
-                        <div class="line-mask">
-                            <span class="hero-headline-line">DIGITAL</span>
-                        </div>
-                        <div class="line-mask">
-                            <span class="hero-headline-line">STORYTELLING</span>
-                        </div>
-                    </h1>
-
-                    <div class="hero-support reveal-text">
-                        <p>Crafting immersive web experiences <br>that push the boundaries of design.</p>
-                    </div>
-                </div>
-
-                <div class="scroll-indicator fade-in">
-                    <span class="scroll-text">SCROLL</span>
-                    <div class="scroll-line">
-                        <div class="scroll-progress"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Cinematic Timeline (About) -->
-            <section class="timeline" id="about">
-                <div class="timeline-container">
-                    <div class="timeline-track">
-                        <div class="timeline-line"></div>
-                        <div class="timeline-progress"></div>
-                    </div>
-                    
-                    <div class="timeline-content">
-                        <div class="timeline-milestone">
-                            <h2 class="milestone-year blur-reveal">2026</h2>
-                            <h3 class="milestone-title blur-reveal">The Pinnacle</h3>
-                            <p class="milestone-desc blur-reveal">Pushing boundaries with WebGL and immersive GSAP experiences for luxury brands globally.</p>
-                        </div>
-                        
-                        <div class="timeline-milestone">
-                            <h2 class="milestone-year blur-reveal">2025</h2>
-                            <h3 class="milestone-title blur-reveal">Awwwards Recognition</h3>
-                            <p class="milestone-desc blur-reveal">Multiple Site of the Day awards for breaking traditional grid layouts and creating cinematic motion.</p>
-                        </div>
-                        
-                        <div class="timeline-milestone">
-                            <h2 class="milestone-year blur-reveal">2024</h2>
-                            <h3 class="milestone-title blur-reveal">Foundation</h3>
-                            <p class="milestone-desc blur-reveal">Establishing the core philosophy of design engineering: where aesthetics meet flawless execution.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Fullscreen Projects -->
-            <section class="projects" id="projects">
+            <!-- 1. HERO SECTION -->
+            <section id="home" class="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden">
                 
-                <div class="project-fullscreen" data-cursor="-project">
-                    <div class="project-bg" style="background-image: url('assets/project_1.png');"></div>
-                    <div class="project-overlay"></div>
-                    <div class="project-info">
-                        <h2 class="project-title blur-reveal">NOVA</h2>
-                        <span class="project-meta blur-reveal">UI / UX / MOTION</span>
+                <!-- Background Typography (Giant Name) -->
+                <!-- Pushed up very high and made massive to match reference -->
+                <div class="absolute top-[8%] left-1/2 -translate-x-1/2 w-full text-center z-[1] pointer-events-none flex justify-center w-full">
+                    <h1 class="text-[#E1C1B6] text-[26vw] font-black uppercase leading-none tracking-tighter select-none whitespace-nowrap overflow-hidden w-full text-center">AYENETT</h1>
+                </div>
+
+                <!-- Header Navigation -->
+                <nav class="absolute top-0 left-0 w-full flex justify-between items-center px-12 py-10 z-[30] text-xs font-bold uppercase tracking-widest text-[#5C504A]">
+                    <div class="flex gap-8">
+                        <a href="#home" class="hover:text-[#E1C1B6] transition-colors">Home</a>
+                        <a href="#about" class="hover:text-[#E1C1B6] transition-colors">About Me</a>
+                        <a href="#projects" class="hover:text-[#E1C1B6] transition-colors">Projects</a>
+                    </div>
+                    <div class="hidden lg:flex gap-8">
+                        <a href="#services" class="hover:text-[#E1C1B6] transition-colors">What You Get</a>
+                        <a href="#services" class="hover:text-[#E1C1B6] transition-colors">Services</a>
+                        <a href="#testimonials" class="hover:text-[#E1C1B6] transition-colors">Clients</a>
+                        <a href="#faq" class="hover:text-[#E1C1B6] transition-colors">FAQ</a>
+                    </div>
+                </nav>
+
+                <!-- Foreground Subject Image -->
+                <!-- Made larger to match the scale of the person in the reference -->
+                <div class="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90vh] z-[10] pointer-events-none flex justify-center items-end">
+                    <img src="assets/my_cutout_image.png" 
+                         alt="Portrait of Ayenett" 
+                         class="h-full w-auto object-cover object-bottom"
+                         style="mask-image: linear-gradient(to top, transparent 0%, black 10%); -webkit-mask-image: linear-gradient(to top, transparent 0%, black 10%);">
+                </div>
+
+                <!-- Central Content (Main Headline & Buttons) -->
+                <!-- Overlapping the chest perfectly like the reference -->
+                <div class="absolute top-[68%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[25] flex flex-col items-center w-full px-4">
+                    <h2 class="text-6xl md:text-8xl lg:text-[7rem] font-black text-[#5C504A] leading-[1.0] tracking-tighter mb-8 text-center" style="text-shadow: 0px 4px 30px rgba(249, 246, 241, 0.8);">
+                        Webflow, <br> Applied Differently.
+                    </h2>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-2">
+                        <a href="#contact" class="bg-[#E1C1B6] text-white px-10 py-5 rounded-full font-bold uppercase tracking-wide hover:bg-[#D6BD9F] transition-colors duration-300 text-sm shadow-xl">Book a Call</a>
+                        <a href="#about" class="bg-[#8E7E73] text-white px-10 py-5 rounded-full font-bold uppercase tracking-wide hover:bg-[#5C504A] transition-colors duration-300 text-sm shadow-xl">About Me</a>
                     </div>
                 </div>
 
-                <div class="project-fullscreen" data-cursor="-project">
-                    <div class="project-bg" style="background-image: url('assets/project_2.png');"></div>
-                    <div class="project-overlay"></div>
-                    <div class="project-info">
-                        <h2 class="project-title blur-reveal">AURA</h2>
-                        <span class="project-meta blur-reveal">DIGITAL EXPERIENCE</span>
+                <!-- Floating Badges - Left Side (Moved in to overlap subject) -->
+                <div class="hidden md:flex absolute left-[10%] lg:left-[15%] top-[55%] z-[20] flex-col gap-6" data-parallax="-0.05">
+                    <div class="dark-glass-card text-white p-5 rounded-2xl shadow-xl flex items-center gap-4 w-56 transform -rotate-1 hover:rotate-0 transition-transform">
+                        <div class="font-black text-5xl leading-none text-[#E1C1B6]">W</div>
+                        <div class="text-sm font-bold leading-tight">80+<br>Projects</div>
+                    </div>
+                    <div class="glass-card text-[#8E7E73] p-5 rounded-2xl shadow-xl flex items-center gap-4 w-56 transform rotate-1 hover:rotate-0 transition-transform ml-4">
+                        <div class="font-black text-5xl text-[#D6BD9F] leading-none">7+</div>
+                        <div class="text-sm font-bold leading-tight">Years of<br>experience</div>
                     </div>
                 </div>
 
-                <div class="project-fullscreen" data-cursor="-project">
-                    <div class="project-bg" style="background-image: url('assets/hero_abstract.png');"></div>
-                    <div class="project-overlay"></div>
-                    <div class="project-info">
-                        <h2 class="project-title blur-reveal">STUDIO</h2>
-                        <span class="project-meta blur-reveal">ART DIRECTION</span>
+                <!-- Floating Badges - Right Side (Moved in to overlap subject) -->
+                <div class="hidden lg:block absolute right-[12%] lg:right-[18%] top-[45%] z-[20] dark-glass-card p-8 rounded-3xl shadow-xl w-64" data-parallax="0.05">
+                    <ul class="flex flex-col gap-6 font-bold text-sm tracking-wide text-white">
+                        <li class="flex items-center gap-4"><span class="text-[#D6BD9F] text-xl">🎨</span> Creative</li>
+                        <li class="flex items-center gap-4"><span class="text-[#D6BD9F] text-xl">🔲</span> Reliable</li>
+                        <li class="flex items-center gap-4"><span class="text-[#D6BD9F] text-xl">👑</span> Strategist</li>
+                        <li class="flex items-center gap-4"><span class="text-[#D6BD9F] text-xl">🔨</span> Builder</li>
+                        <li class="flex items-center gap-4"><span class="text-[#D6BD9F] text-xl">⚡</span> Efficient</li>
+                    </ul>
+                </div>
+
+                <!-- Bottom Left Text -->
+                <div class="absolute left-12 bottom-12 z-[15]">
+                    <p class="text-sm font-medium tracking-wide text-[#5C504A]">The Webflow Expert.<br>That's Ayenett.</p>
+                </div>
+
+                <!-- Bottom Right Text -->
+                <div class="absolute right-12 bottom-12 z-[15] max-w-[320px]">
+                    <p class="text-sm font-medium leading-relaxed text-[#5C504A]">Working closely with your team to deliver Webflow builds that merge creativity, technical excellence, and long-term value.</p>
+                </div>
+            </section>
+
+            <!-- 2. IMMERSIVE ABOUT JOURNEY (5 Stages) -->
+            <section id="about-journey" class="relative w-full min-h-[350vh] bg-[#F9F6F1] overflow-hidden pt-32 pb-40">
+                
+                <!-- STAGE 1: The Intro & Pinned Background -->
+                <div class="relative w-full min-h-screen flex items-center justify-center pt-20 mb-32 z-10 px-8 lg:px-24">
+                    <!-- This massive text will be pinned by GSAP to stay behind the content as the user scrolls -->
+                    <div id="about-bg-text" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none z-0">
+                        <h2 class="text-[#E1C1B6] opacity-30 text-[20vw] font-black uppercase leading-none tracking-tighter select-none whitespace-nowrap">ABOUT ME</h2>
+                    </div>
+                    
+                    <div class="relative z-10 max-w-4xl mx-auto text-center reveal-up">
+                        <h3 class="text-[#D6BD9F] font-bold tracking-widest uppercase text-sm mb-6">The Narrative</h3>
+                        <h2 class="text-5xl lg:text-7xl font-black text-[#5C504A] leading-[1.1] tracking-tight mb-8">
+                            Crafting digital <br>experiences that <span class="text-[#E1C1B6]">resonate.</span>
+                        </h2>
+                        <p class="text-xl lg:text-2xl leading-relaxed text-[#8E7E73] font-light mb-8">
+                            I don't just build websites; I engineer premium digital environments. With over seven years of specialized experience in Webflow and front-end development, I merge high-end editorial aesthetics with robust technical foundations.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- STAGE 2: The Winding Career Journey (Timeline) -->
+                <div id="timeline-wrapper" class="relative w-full h-[3600px] mb-40 hidden md:block">
+                    
+                    <!-- Sticky Immersive Backgrounds -->
+                    <div class="sticky top-0 w-full h-screen z-0 overflow-hidden">
+                        <img id="bg-milestone-0" src="assets/project_1.png" class="absolute inset-0 w-full h-full object-cover opacity-0 milestone-bg transition-transform duration-1000 scale-110">
+                        <img id="bg-milestone-1" src="assets/project_2.png" class="absolute inset-0 w-full h-full object-cover opacity-0 milestone-bg transition-transform duration-1000 scale-110">
+                        <img id="bg-milestone-2" src="assets/project_1.png" class="absolute inset-0 w-full h-full object-cover opacity-0 milestone-bg transition-transform duration-1000 scale-110" style="filter: sepia(0.5);">
+                        <img id="bg-milestone-3" src="assets/project_2.png" class="absolute inset-0 w-full h-full object-cover opacity-0 milestone-bg transition-transform duration-1000 scale-110" style="filter: grayscale(0.8);">
+                        <!-- Blending Overlay so cards remain readable -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-[#F9F6F1] via-[#F9F6F1]/80 to-[#F9F6F1] backdrop-blur-[2px]"></div>
+                    </div>
+
+                    <!-- The Scrolling Timeline Stage -->
+                    <div id="timeline-stage" class="absolute top-0 w-full h-full max-w-[1400px] left-1/2 -translate-x-1/2 z-20 pt-32 pb-32">
+                        <!-- SVG Path for drawing effect -->
+                        <svg preserveAspectRatio="none" viewBox="0 0 100 100" class="absolute inset-0 w-full h-full pointer-events-none">
+                            <path id="journey-path" d="M 50 0 C 50 8, 75 12, 75 20 C 75 30, 25 30, 25 40 C 25 50, 75 50, 75 60 C 75 70, 25 70, 25 80 C 25 90, 50 92, 50 100" fill="none" stroke="#E1C1B6" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+                        </svg>
+
+                        <!-- Milestone 1 -->
+                        <div class="absolute w-5 h-5 rounded-full bg-[#D6BD9F] border-[5px] border-[#F9F6F1] left-[75%] top-[20%] -translate-x-1/2 -translate-y-1/2 z-30 shadow-lg milestone-node"></div>
+                        <div class="absolute right-[28%] top-[20%] -translate-y-1/2 w-[450px] milestone-card" data-index="0">
+                            
+                            <!-- Popups for Milestone 1 (Further away and more of them) -->
+                            <img src="assets/project_1.png" class="milestone-popup absolute -top-32 -right-40 w-48 h-48 object-cover rounded-3xl shadow-2xl rotate-12 opacity-0 pointer-events-none z-10 filter grayscale">
+                            <img src="assets/project_2.png" class="milestone-popup absolute -bottom-20 -right-24 w-32 h-32 object-cover rounded-full shadow-xl -rotate-12 opacity-0 pointer-events-none z-0">
+                            <div class="milestone-popup absolute -bottom-12 -left-20 bg-white text-[#5C504A] font-bold text-sm px-6 py-3 rounded-full shadow-2xl -rotate-6 opacity-0 pointer-events-none z-10 border border-[#E1C1B6]/30">
+                                🏆 Global Clients
+                            </div>
+                            <img src="assets/project_1.png" class="milestone-popup absolute top-1/2 -left-32 w-36 h-36 object-cover rounded-2xl shadow-2xl -rotate-12 opacity-0 pointer-events-none z-0 filter sepia">
+                            
+                            <div class="glass-card p-12 rounded-[2.5rem] shadow-2xl hover:-translate-y-3 transition-transform duration-700 group relative z-20 bg-white/70 backdrop-blur-xl">
+                                <h2 class="text-[#E1C1B6] text-8xl font-black mb-4 leading-none group-hover:scale-105 transition-transform origin-left duration-500">'24</h2>
+                                <h4 class="text-3xl font-bold text-[#5C504A] mb-4">Independent Studio</h4>
+                                <p class="text-[#8E7E73] font-light leading-relaxed text-lg">Partnering with global brands and award-winning agencies to deliver bespoke Webflow experiences that push boundaries.</p>
+                            </div>
+                        </div>
+
+                        <!-- Milestone 2 -->
+                        <div class="absolute w-5 h-5 rounded-full bg-[#D6BD9F] border-[5px] border-[#F9F6F1] left-[25%] top-[40%] -translate-x-1/2 -translate-y-1/2 z-30 shadow-lg milestone-node"></div>
+                        <div class="absolute left-[28%] top-[40%] -translate-y-1/2 w-[450px] milestone-card" data-index="1">
+                            
+                            <!-- Popups for Milestone 2 -->
+                            <img src="assets/project_2.png" class="milestone-popup absolute -bottom-32 -right-32 w-48 h-48 object-cover rounded-full shadow-2xl -rotate-12 opacity-0 pointer-events-none z-10 border-8 border-white">
+                            <img src="assets/project_1.png" class="milestone-popup absolute -top-20 -right-20 w-36 h-36 object-cover rounded-2xl shadow-xl rotate-6 opacity-0 pointer-events-none z-0">
+                            <div class="milestone-popup absolute -top-16 -left-16 bg-[#5C504A] text-[#F9F6F1] font-bold text-sm px-6 py-3 rounded-full shadow-2xl rotate-3 opacity-0 pointer-events-none z-10">
+                                💻 1M+ Monthly Users
+                            </div>
+                            <div class="milestone-popup absolute top-1/3 -right-40 bg-white text-[#D6BD9F] font-bold text-base px-5 py-4 rounded-xl shadow-2xl rotate-12 opacity-0 pointer-events-none z-0">
+                                SaaS Platform
+                            </div>
+
+                            <div class="glass-card p-12 rounded-[2.5rem] shadow-2xl hover:-translate-y-3 transition-transform duration-700 group relative z-20 bg-white/70 backdrop-blur-xl">
+                                <h2 class="text-[#D6BD9F] text-8xl font-black mb-4 leading-none group-hover:scale-105 transition-transform origin-left duration-500">'21</h2>
+                                <h4 class="text-3xl font-bold text-[#5C504A] mb-4">Lead Developer</h4>
+                                <p class="text-[#8E7E73] font-light leading-relaxed text-lg">Spearheaded technical development for high-traffic luxury e-commerce and scalable SaaS platforms.</p>
+                            </div>
+                        </div>
+
+                        <!-- Milestone 3 -->
+                        <div class="absolute w-5 h-5 rounded-full bg-[#D6BD9F] border-[5px] border-[#F9F6F1] left-[75%] top-[60%] -translate-x-1/2 -translate-y-1/2 z-30 shadow-lg milestone-node"></div>
+                        <div class="absolute right-[28%] top-[60%] -translate-y-1/2 w-[450px] milestone-card" data-index="2">
+                            
+                            <!-- Popups for Milestone 3 -->
+                            <img src="assets/project_1.png" class="milestone-popup absolute -top-32 -left-32 w-44 h-44 object-cover rounded-3xl shadow-2xl -rotate-6 opacity-0 pointer-events-none z-10 filter sepia">
+                            <img src="assets/project_2.png" class="milestone-popup absolute -bottom-24 -left-16 w-32 h-32 object-cover rounded-xl shadow-xl rotate-12 opacity-0 pointer-events-none z-0">
+                            <div class="milestone-popup absolute -bottom-16 -right-16 bg-[#D6BD9F] text-white font-bold text-sm px-6 py-3 rounded-full shadow-2xl rotate-6 opacity-0 pointer-events-none z-10">
+                                🎓 Graduated
+                            </div>
+                            <div class="milestone-popup absolute top-1/4 -left-48 bg-white text-[#8E7E73] font-bold text-base px-5 py-4 rounded-xl shadow-2xl -rotate-12 opacity-0 pointer-events-none z-0 border border-[#8E7E73]/20">
+                                First Code
+                            </div>
+
+                            <div class="glass-card p-12 rounded-[2.5rem] shadow-2xl hover:-translate-y-3 transition-transform duration-700 group relative z-20 bg-white/70 backdrop-blur-xl">
+                                <h2 class="text-[#8E7E73] text-8xl font-black mb-4 leading-none group-hover:scale-105 transition-transform origin-left duration-500">'18</h2>
+                                <h4 class="text-3xl font-bold text-[#5C504A] mb-4">The Beginning</h4>
+                                <p class="text-[#8E7E73] font-light leading-relaxed text-lg">Started the journey exploring front-end code, interactive design principles, and mastering motion graphics.</p>
+                            </div>
+                        </div>
+
+                        <!-- Milestone 4: High School -->
+                        <div class="absolute w-5 h-5 rounded-full bg-[#D6BD9F] border-[5px] border-[#F9F6F1] left-[25%] top-[80%] -translate-x-1/2 -translate-y-1/2 z-30 shadow-lg milestone-node"></div>
+                        <div class="absolute left-[28%] top-[80%] -translate-y-1/2 w-[450px] milestone-card" data-index="3">
+                            
+                            <!-- Popups for Milestone 4 -->
+                            <img src="assets/project_2.png" class="milestone-popup absolute -top-24 -right-32 w-48 h-36 object-cover rounded-2xl shadow-2xl rotate-12 opacity-0 pointer-events-none z-10">
+                            <img src="assets/project_1.png" class="milestone-popup absolute -bottom-32 -right-12 w-36 h-36 object-cover rounded-full shadow-xl -rotate-6 opacity-0 pointer-events-none z-0">
+                            <div class="milestone-popup absolute -bottom-16 -left-12 bg-white text-[#5C504A] font-bold text-sm px-6 py-3 rounded-full shadow-2xl -rotate-3 opacity-0 pointer-events-none z-10 border-2 border-[#E1C1B6]">
+                                🔬 Science Fair Winner
+                            </div>
+                            <div class="milestone-popup absolute top-1/2 -right-24 bg-[#8E7E73] text-white font-bold text-sm px-5 py-3 rounded-full shadow-xl rotate-6 opacity-0 pointer-events-none z-0">
+                                📚 Club President
+                            </div>
+
+                            <div class="glass-card p-12 rounded-[2.5rem] shadow-2xl hover:-translate-y-3 transition-transform duration-700 group relative z-20 bg-white/70 backdrop-blur-xl">
+                                <h2 class="text-[#E1C1B6] text-8xl font-black mb-4 leading-none group-hover:scale-105 transition-transform origin-left duration-500">'15</h2>
+                                <h4 class="text-3xl font-bold text-[#5C504A] mb-4">High School Education</h4>
+                                <p class="text-[#8E7E73] font-light leading-relaxed text-lg">Discovered a passion for technology and design. Led computer clubs and participated in national science competitions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Fallback Timeline -->
+                <div class="md:hidden py-20 px-8 relative z-20 mb-20">
+                    <div class="border-l-[3px] border-[#E1C1B6] pl-10 space-y-16 ml-4 relative">
+                        <div class="relative reveal-up">
+                            <div class="absolute w-5 h-5 bg-[#E1C1B6] rounded-full -left-[51px] top-4 border-4 border-[#F9F6F1] shadow-lg"></div>
+                            <div class="glass-card p-8 rounded-3xl">
+                                <h2 class="text-[#E1C1B6] text-6xl font-black mb-2">'24</h2>
+                                <h4 class="text-2xl font-bold text-[#5C504A] mb-2">Independent Studio</h4>
+                                <p class="text-[#8E7E73] font-light">Partnering with global brands to deliver bespoke Webflow experiences.</p>
+                            </div>
+                        </div>
+                        <div class="relative reveal-up">
+                            <div class="absolute w-5 h-5 bg-[#D6BD9F] rounded-full -left-[51px] top-4 border-4 border-[#F9F6F1] shadow-lg"></div>
+                            <div class="glass-card p-8 rounded-3xl">
+                                <h2 class="text-[#D6BD9F] text-6xl font-black mb-2">'21</h2>
+                                <h4 class="text-2xl font-bold text-[#5C504A] mb-2">Lead Developer</h4>
+                                <p class="text-[#8E7E73] font-light">Spearheaded development for high-traffic luxury SaaS platforms.</p>
+                            </div>
+                        </div>
+                        <div class="relative reveal-up">
+                            <div class="absolute w-5 h-5 bg-[#8E7E73] rounded-full -left-[51px] top-4 border-4 border-[#F9F6F1] shadow-lg"></div>
+                            <div class="glass-card p-8 rounded-3xl">
+                                <h2 class="text-[#8E7E73] text-6xl font-black mb-2">'18</h2>
+                                <h4 class="text-2xl font-bold text-[#5C504A] mb-2">The Beginning</h4>
+                                <p class="text-[#8E7E73] font-light">Started the journey exploring interactive design principles.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STAGE 3: Floating Certifications -->
+                <div class="relative max-w-[1400px] mx-auto px-8 lg:px-24 mb-40 z-20">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                        
+                        <div class="md:col-span-6 flex flex-col gap-8">
+                            <!-- Certificate 1 -->
+                            <div class="glass-card p-8 rounded-[2rem] shadow-2xl achievement-card relative overflow-hidden group" data-speed="0.95">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-[#E1C1B6]/10 rounded-bl-full -z-10 group-hover:bg-[#E1C1B6]/20 transition-colors duration-500"></div>
+                                <div class="flex items-start gap-6">
+                                    <div class="w-16 h-16 bg-[#5C504A] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-500">🥇</div>
+                                    <div>
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <h4 class="text-2xl font-black text-[#5C504A]">Webflow Expert</h4>
+                                            <svg class="w-5 h-5 text-[#D6BD9F]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                        </div>
+                                        <p class="text-[#8E7E73] font-light text-sm mb-4 leading-relaxed">Official certification demonstrating mastery in building complex, scalable Webflow architectures.</p>
+                                        <div class="flex items-center gap-2">
+                                            <span class="inline-block px-3 py-1 bg-[#F9F6F1] border border-[#5C504A]/10 rounded-full text-[10px] font-bold text-[#E1C1B6] uppercase tracking-widest">Issued 2023</span>
+                                            <span class="inline-block px-3 py-1 bg-[#F9F6F1] border border-[#5C504A]/10 rounded-full text-[10px] font-bold text-[#5C504A] uppercase tracking-widest hover:bg-[#E1C1B6] hover:text-white transition-colors cursor-pointer">Verify Credential</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Certificate 2 -->
+                            <div class="glass-card p-8 rounded-[2rem] shadow-2xl achievement-card relative overflow-hidden group ml-0 md:ml-12" data-speed="1.15">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-[#D6BD9F]/10 rounded-bl-full -z-10 group-hover:bg-[#D6BD9F]/20 transition-colors duration-500"></div>
+                                <div class="flex items-start gap-6">
+                                    <div class="w-16 h-16 bg-[#D6BD9F] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-500">📜</div>
+                                    <div>
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <h4 class="text-2xl font-black text-[#5C504A]">Frontend Professional</h4>
+                                            <svg class="w-5 h-5 text-[#D6BD9F]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                        </div>
+                                        <p class="text-[#8E7E73] font-light text-sm mb-4 leading-relaxed">Advanced certification in React, JavaScript architecture, and modern CSS frameworks.</p>
+                                        <div class="flex items-center gap-2">
+                                            <span class="inline-block px-3 py-1 bg-[#F9F6F1] border border-[#5C504A]/10 rounded-full text-[10px] font-bold text-[#D6BD9F] uppercase tracking-widest">Issued 2021</span>
+                                            <span class="inline-block px-3 py-1 bg-[#F9F6F1] border border-[#5C504A]/10 rounded-full text-[10px] font-bold text-[#5C504A] uppercase tracking-widest hover:bg-[#D6BD9F] hover:text-white transition-colors cursor-pointer">Verify Credential</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-6 flex justify-center md:justify-end mt-12 md:mt-0">
+                            <div class="relative achievement-card" data-speed="1">
+                                <!-- Large decorative shape -->
+                                <div class="absolute -inset-4 bg-[#E1C1B6]/20 rounded-full filter blur-3xl w-full h-full"></div>
+                                <h3 class="text-5xl md:text-7xl font-black text-[#5C504A] leading-[1.1] relative z-10 text-center md:text-right">
+                                    Certified <br><span class="text-[#D6BD9F]">Professional</span> <br>Expertise.
+                                </h3>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- STAGE 4: Massive Statistics -->
+                <div id="statistics-stage" class="relative max-w-[1400px] mx-auto px-8 lg:px-24 py-20 z-20 mb-40 border-y border-[#5C504A]/10">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+                        <div class="stat-block">
+                            <h2 class="text-6xl md:text-8xl font-black text-[#E1C1B6] mb-2"><span class="counter" data-target="80">0</span>+</h2>
+                            <p class="text-[#5C504A] font-bold uppercase tracking-widest text-sm">Projects Launched</p>
+                        </div>
+                        <div class="stat-block">
+                            <h2 class="text-6xl md:text-8xl font-black text-[#D6BD9F] mb-2"><span class="counter" data-target="7">0</span>+</h2>
+                            <p class="text-[#5C504A] font-bold uppercase tracking-widest text-sm">Years Experience</p>
+                        </div>
+                        <div class="stat-block">
+                            <h2 class="text-6xl md:text-8xl font-black text-[#8E7E73] mb-2"><span class="counter" data-target="15">0</span></h2>
+                            <p class="text-[#5C504A] font-bold uppercase tracking-widest text-sm">Awards Won</p>
+                        </div>
+                        <div class="stat-block">
+                            <h2 class="text-6xl md:text-8xl font-black text-[#5C504A] mb-2"><span class="counter" data-target="100">0</span>%</h2>
+                            <p class="text-[#5C504A] font-bold uppercase tracking-widest text-sm">Client Satisfaction</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STAGE 5: Interactive Capabilities -->
+                <div class="relative max-w-[1400px] mx-auto px-8 lg:px-24 z-20">
+                    <div class="text-center mb-16 reveal-up">
+                        <h3 class="text-[#D6BD9F] font-bold tracking-widest uppercase text-sm mb-4">Toolkit</h3>
+                        <h2 class="text-5xl font-black text-[#5C504A] tracking-tight">Core Capabilities</h2>
+                    </div>
+                    
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <div class="capability-badge glass-card px-8 py-4 rounded-full shadow-lg text-[#5C504A] font-bold text-lg hover:bg-[#E1C1B6] hover:text-white transition-colors duration-300 cursor-default">Webflow Development</div>
+                        <div class="capability-badge glass-card px-8 py-4 rounded-full shadow-lg text-[#5C504A] font-bold text-lg hover:bg-[#D6BD9F] hover:text-white transition-colors duration-300 cursor-default">GSAP Motion Design</div>
+                        <div class="capability-badge glass-card px-8 py-4 rounded-full shadow-lg text-[#5C504A] font-bold text-lg hover:bg-[#8E7E73] hover:text-white transition-colors duration-300 cursor-default">Client-First Framework</div>
+                        <div class="capability-badge glass-card px-8 py-4 rounded-full shadow-lg text-[#5C504A] font-bold text-lg hover:bg-[#E1C1B6] hover:text-white transition-colors duration-300 cursor-default">Technical SEO</div>
+                        <div class="capability-badge glass-card px-8 py-4 rounded-full shadow-lg text-[#5C504A] font-bold text-lg hover:bg-[#D6BD9F] hover:text-white transition-colors duration-300 cursor-default">Figma to Webflow</div>
+                        <div class="capability-badge glass-card px-8 py-4 rounded-full shadow-lg text-[#5C504A] font-bold text-lg hover:bg-[#8E7E73] hover:text-white transition-colors duration-300 cursor-default">Custom JavaScript</div>
+                        <div class="capability-badge glass-card px-8 py-4 rounded-full shadow-lg text-[#5C504A] font-bold text-lg hover:bg-[#E1C1B6] hover:text-white transition-colors duration-300 cursor-default">E-Commerce Setup</div>
                     </div>
                 </div>
 
             </section>
 
-            <!-- Contact Section -->
-            <section class="contact" id="contact">
-                <div class="contact-content">
-                    <div class="line-mask">
-                        <a href="mailto:hello@nesh.com" class="huge-cta magnetic" data-cursor="-hidden">LET'S TALK</a>
+            <!-- 3. FEATURED PROJECTS SECTION -->
+            <!-- 3. SELECTED WORK (Horizontal Scroll Showcase) -->
+            <section id="work" class="relative bg-[#1A1715] text-[#F9F6F1] overflow-hidden h-screen flex flex-col justify-center">
+                
+                <!-- Header Area -->
+                <div class="w-full px-8 lg:px-16 2xl:px-24 pt-20 lg:pt-24 pb-8 flex-shrink-0">
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8">
+                        <div class="max-w-3xl">
+                            <div class="inline-block border border-[#D6BD9F]/30 rounded-full px-5 py-1.5 mb-6">
+                                <span class="text-[#D6BD9F] font-bold text-[10px] tracking-widest uppercase">Selected Work</span>
+                            </div>
+                            <h2 class="text-4xl md:text-6xl font-black text-[#F9F6F1] leading-[1.1] tracking-tight">
+                                Built in Webflow,<br>
+                                <span class="text-[#E1C1B6]">Made to Perform</span>
+                            </h2>
+                        </div>
+                        <div class="max-w-sm pb-2">
+                            <p class="text-[#8E7E73] font-light text-base leading-relaxed">
+                                Over seven years I've helped businesses across different industries turn their ideas into websites that look and work exactly how they imagined. Here's a look at some of that work.
+                            </p>
+                        </div>
                     </div>
-                    <div class="social-links blur-reveal">
-                        <a href="#" class="magnetic" data-cursor="-hidden">TWITTER</a>
-                        <a href="#" class="magnetic" data-cursor="-hidden">INSTAGRAM</a>
-                        <a href="#" class="magnetic" data-cursor="-hidden">LINKEDIN</a>
+                </div>
+
+                <!-- Horizontal Scroll Track Container -->
+                <div id="horizontal-scroll-container" class="relative w-full flex-1 min-h-0 flex items-center pb-12">
+                    
+                    <!-- The Track that moves horizontally -->
+                    <div id="horizontal-track" class="flex gap-8 px-8 lg:px-16 2xl:px-24 h-full items-center">
+                        
+                        <!-- Project Card 1 -->
+                        <div class="horizontal-card relative w-[75vw] md:w-[45vw] lg:w-[35vw] h-[90%] flex-shrink-0 group overflow-hidden rounded-[2rem] bg-[#231F1C] border border-white/5">
+                            <img src="assets/project_1.png" alt="Nova Finance" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-1000 ease-out mix-blend-luminosity group-hover:mix-blend-normal">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#1A1715] via-[#1A1715]/40 to-transparent"></div>
+                            
+                            <div class="absolute inset-0 p-8 flex flex-col justify-between z-10">
+                                <div class="flex justify-between items-center">
+                                    <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-md">
+                                        <span class="text-xs font-medium">01</span>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">CMS</span>
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">API</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="relative">
+                                    <h3 class="text-3xl font-black mb-3">Nova Finance</h3>
+                                    <p class="text-[#8E7E73] font-light text-sm max-w-[85%]">High-performance Webflow platform for financial analytics.</p>
+                                    
+                                    <div class="absolute right-0 bottom-0 w-12 h-12 bg-[#231F1C] group-hover:bg-[#D6BD9F] rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl cursor-pointer">
+                                        <span class="text-white group-hover:text-[#1A1715] font-bold -rotate-45 group-hover:rotate-0 transition-transform duration-300">→</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Card 2 -->
+                        <div class="horizontal-card relative w-[75vw] md:w-[45vw] lg:w-[35vw] h-[90%] flex-shrink-0 group overflow-hidden rounded-[2rem] bg-[#231F1C] border border-white/5">
+                            <img src="assets/project_2.png" alt="Aura Residences" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-1000 ease-out mix-blend-luminosity group-hover:mix-blend-normal">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#1A1715] via-[#1A1715]/40 to-transparent"></div>
+                            
+                            <div class="absolute inset-0 p-8 flex flex-col justify-between z-10">
+                                <div class="flex justify-between items-center">
+                                    <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-md">
+                                        <span class="text-xs font-medium">02</span>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">WebGL</span>
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">GSAP</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="relative">
+                                    <h3 class="text-3xl font-black mb-3">Aura Residences</h3>
+                                    <p class="text-[#8E7E73] font-light text-sm max-w-[85%]">Cinematic browsing experience crafted for ultra-luxury real estate.</p>
+                                    
+                                    <div class="absolute right-0 bottom-0 w-12 h-12 bg-[#231F1C] group-hover:bg-[#D6BD9F] rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl cursor-pointer">
+                                        <span class="text-white group-hover:text-[#1A1715] font-bold -rotate-45 group-hover:rotate-0 transition-transform duration-300">→</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Card 3 -->
+                        <div class="horizontal-card relative w-[75vw] md:w-[45vw] lg:w-[35vw] h-[90%] flex-shrink-0 group overflow-hidden rounded-[2rem] bg-[#231F1C] border border-white/5">
+                            <img src="assets/project_1.png" alt="Happy Ring" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-1000 ease-out mix-blend-luminosity group-hover:mix-blend-normal" style="filter: hue-rotate(180deg);">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#1A1715] via-[#1A1715]/40 to-transparent"></div>
+                            
+                            <div class="absolute inset-0 p-8 flex flex-col justify-between z-10">
+                                <div class="flex justify-between items-center">
+                                    <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-md">
+                                        <span class="text-xs font-medium">03</span>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">Shopify</span>
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">SEO</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="relative">
+                                    <h3 class="text-3xl font-black mb-3">Happy Ring</h3>
+                                    <p class="text-[#8E7E73] font-light text-sm max-w-[85%]">Seamless headless e-commerce integration for wellness wearables.</p>
+                                    
+                                    <div class="absolute right-0 bottom-0 w-12 h-12 bg-[#231F1C] group-hover:bg-[#D6BD9F] rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl cursor-pointer">
+                                        <span class="text-white group-hover:text-[#1A1715] font-bold -rotate-45 group-hover:rotate-0 transition-transform duration-300">→</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Card 4 -->
+                        <div class="horizontal-card relative w-[75vw] md:w-[45vw] lg:w-[35vw] h-[90%] flex-shrink-0 group overflow-hidden rounded-[2rem] bg-[#231F1C] border border-white/5">
+                            <img src="assets/project_2.png" alt="Nexus AI" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-1000 ease-out mix-blend-luminosity group-hover:mix-blend-normal" style="filter: sepia(0.5);">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#1A1715] via-[#1A1715]/40 to-transparent"></div>
+                            
+                            <div class="absolute inset-0 p-8 flex flex-col justify-between z-10">
+                                <div class="flex justify-between items-center">
+                                    <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-md">
+                                        <span class="text-xs font-medium">04</span>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">SaaS</span>
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">Design System</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="relative">
+                                    <h3 class="text-3xl font-black mb-3">Nexus AI</h3>
+                                    <p class="text-[#8E7E73] font-light text-sm max-w-[85%]">Enterprise-grade marketing site for a generative AI startup.</p>
+                                    
+                                    <div class="absolute right-0 bottom-0 w-12 h-12 bg-[#231F1C] group-hover:bg-[#D6BD9F] rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl cursor-pointer">
+                                        <span class="text-white group-hover:text-[#1A1715] font-bold -rotate-45 group-hover:rotate-0 transition-transform duration-300">→</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Card 5 -->
+                        <div class="horizontal-card relative w-[75vw] md:w-[45vw] lg:w-[35vw] h-[90%] flex-shrink-0 group overflow-hidden rounded-[2rem] bg-[#231F1C] border border-white/5">
+                            <img src="assets/project_1.png" alt="Oasis Spa" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-1000 ease-out mix-blend-luminosity group-hover:mix-blend-normal" style="filter: grayscale(0.8);">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#1A1715] via-[#1A1715]/40 to-transparent"></div>
+                            
+                            <div class="absolute inset-0 p-8 flex flex-col justify-between z-10">
+                                <div class="flex justify-between items-center">
+                                    <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-md">
+                                        <span class="text-xs font-medium">05</span>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">Booking</span>
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">Local SEO</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="relative">
+                                    <h3 class="text-3xl font-black mb-3">Oasis Spa</h3>
+                                    <p class="text-[#8E7E73] font-light text-sm max-w-[85%]">Calming, highly-optimized booking portal for premium wellness retreats.</p>
+                                    
+                                    <div class="absolute right-0 bottom-0 w-12 h-12 bg-[#231F1C] group-hover:bg-[#D6BD9F] rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl cursor-pointer">
+                                        <span class="text-white group-hover:text-[#1A1715] font-bold -rotate-45 group-hover:rotate-0 transition-transform duration-300">→</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Card 6 -->
+                        <div class="horizontal-card relative w-[75vw] md:w-[45vw] lg:w-[35vw] h-[90%] flex-shrink-0 group overflow-hidden rounded-[2rem] bg-[#231F1C] border border-white/5">
+                            <img src="assets/project_2.png" alt="Vanguard Studios" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-1000 ease-out mix-blend-luminosity group-hover:mix-blend-normal" style="filter: hue-rotate(90deg);">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#1A1715] via-[#1A1715]/40 to-transparent"></div>
+                            
+                            <div class="absolute inset-0 p-8 flex flex-col justify-between z-10">
+                                <div class="flex justify-between items-center">
+                                    <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-md">
+                                        <span class="text-xs font-medium">06</span>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">Portfolio</span>
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">Motion</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="relative">
+                                    <h3 class="text-3xl font-black mb-3">Vanguard Studios</h3>
+                                    <p class="text-[#8E7E73] font-light text-sm max-w-[85%]">A bold, award-winning showcase for a creative architecture firm.</p>
+                                    
+                                    <div class="absolute right-0 bottom-0 w-12 h-12 bg-[#231F1C] group-hover:bg-[#D6BD9F] rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl cursor-pointer">
+                                        <span class="text-white group-hover:text-[#1A1715] font-bold -rotate-45 group-hover:rotate-0 transition-transform duration-300">→</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. SERVICES SECTION -->
+            <section id="services" class="py-32 px-8 lg:px-24 bg-white/50">
+                <div class="max-w-[1600px] mx-auto">
+                    <div class="grid lg:grid-cols-3 gap-16">
+                        <div class="lg:col-span-1 reveal-up">
+                            <h3 class="text-[#D6BD9F] font-bold tracking-widest uppercase text-sm mb-4">Expertise</h3>
+                            <h2 class="text-5xl font-black text-[#5C504A] tracking-tight mb-8">What I Do Best</h2>
+                            <p class="text-[#8E7E73] font-light leading-relaxed">Focusing exclusively on high-end digital execution to ensure every project is built to the highest possible standard.</p>
+                        </div>
+                        
+                        <div class="lg:col-span-2 grid sm:grid-cols-2 gap-8">
+                            <div class="glass-card p-10 rounded-3xl reveal-up">
+                                <div class="w-14 h-14 bg-[#E1C1B6] rounded-2xl flex items-center justify-center text-white text-2xl mb-8 shadow-lg">💻</div>
+                                <h4 class="text-2xl font-bold text-[#5C504A] mb-4">Webflow Development</h4>
+                                <p class="text-[#8E7E73] font-light text-sm leading-relaxed">Pixel-perfect, responsive, and scalable Webflow builds using Client-First architecture and best practices.</p>
+                            </div>
+                            
+                            <div class="glass-card p-10 rounded-3xl reveal-up">
+                                <div class="w-14 h-14 bg-[#D6BD9F] rounded-2xl flex items-center justify-center text-white text-2xl mb-8 shadow-lg">✨</div>
+                                <h4 class="text-2xl font-bold text-[#5C504A] mb-4">Interactive Motion</h4>
+                                <p class="text-[#8E7E73] font-light text-sm leading-relaxed">Custom GSAP and WebGL animations that elevate the user experience without compromising performance.</p>
+                            </div>
+                            
+                            <div class="glass-card p-10 rounded-3xl reveal-up">
+                                <div class="w-14 h-14 bg-[#5C504A] rounded-2xl flex items-center justify-center text-[#E1C1B6] text-2xl mb-8 shadow-lg">🎨</div>
+                                <h4 class="text-2xl font-bold text-[#5C504A] mb-4">UI/UX Translation</h4>
+                                <p class="text-[#8E7E73] font-light text-sm leading-relaxed">Bridging the gap between Figma designs and live code, ensuring design intent is preserved flawlessly.</p>
+                            </div>
+                            
+                            <div class="glass-card p-10 rounded-3xl reveal-up">
+                                <div class="w-14 h-14 bg-[#8E7E73] rounded-2xl flex items-center justify-center text-white text-2xl mb-8 shadow-lg">⚡</div>
+                                <h4 class="text-2xl font-bold text-[#5C504A] mb-4">Technical SEO</h4>
+                                <p class="text-[#8E7E73] font-light text-sm leading-relaxed">Optimized site structure, semantic HTML, and blazing fast load times for maximum search visibility.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. TESTIMONIALS SECTION -->
+            <section id="testimonials" class="py-32 px-8 lg:px-24 overflow-hidden relative">
+                <div class="max-w-[1200px] mx-auto text-center reveal-up">
+                    <h3 class="text-[#D6BD9F] font-bold tracking-widest uppercase text-sm mb-4">Client Voices</h3>
+                    <h2 class="text-6xl font-black text-[#5C504A] tracking-tight mb-20">The Impact</h2>
+                    
+                    <div class="glass-card p-12 md:p-20 rounded-[3rem] relative mx-auto">
+                        <div class="text-[#D6BD9F] text-4xl mb-8 flex justify-center gap-2">★★★★★</div>
+                        <p class="text-2xl md:text-4xl font-light text-[#5C504A] leading-snug mb-12">"Ayenett completely transformed our digital presence. The attention to detail in the animations and the sheer speed of the Webflow build exceeded all our expectations."</p>
+                        <div>
+                            <h5 class="font-bold text-[#5C504A] text-lg">Sarah Jenkins</h5>
+                            <span class="text-[#8E7E73] text-sm tracking-wide uppercase">CEO, Nova Finance</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. FAQ SECTION -->
+            <section id="faq" class="py-32 px-8 lg:px-24 max-w-[1000px] mx-auto">
+                <div class="text-center mb-20 reveal-up">
+                    <h2 class="text-5xl font-black text-[#5C504A] tracking-tight">Frequently Asked</h2>
+                </div>
+                
+                <div class="flex flex-col gap-6">
+                    <div class="glass-card p-8 rounded-2xl reveal-up">
+                        <h4 class="text-xl font-bold text-[#5C504A] mb-4">What is your typical project timeline?</h4>
+                        <p class="text-[#8E7E73] font-light leading-relaxed">Most bespoke Webflow builds take between 4 to 8 weeks, depending on the complexity of the animations, the number of pages, and the CMS requirements.</p>
+                    </div>
+                    <div class="glass-card p-8 rounded-2xl reveal-up">
+                        <h4 class="text-xl font-bold text-[#5C504A] mb-4">Do you design the websites as well?</h4>
+                        <p class="text-[#8E7E73] font-light leading-relaxed">My primary focus is on high-end Webflow development and motion design. I typically partner with talented UI/UX designers or work directly with your existing Figma files.</p>
+                    </div>
+                    <div class="glass-card p-8 rounded-2xl reveal-up">
+                        <h4 class="text-xl font-bold text-[#5C504A] mb-4">Can I update the content myself?</h4>
+                        <p class="text-[#8E7E73] font-light leading-relaxed">Absolutely. Every site is built with a meticulously organized Webflow CMS and the Client-First naming convention, making it incredibly intuitive for your team to manage content post-launch.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. CONTACT SECTION / FOOTER -->
+            <section id="contact" class="py-40 px-8 lg:px-24 bg-[#5C504A] text-[#F9F6F1] relative overflow-hidden">
+                <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#F9F6F1 1px, transparent 1px); background-size: 40px 40px;"></div>
+                
+                <div class="max-w-[1600px] mx-auto relative z-10 flex flex-col items-center text-center">
+                    <h2 class="text-6xl md:text-8xl lg:text-[10rem] font-black tracking-tighter leading-[0.9] mb-12 text-outline" style="text-shadow: 0px 4px 30px rgba(0,0,0,0.3);">
+                        LET'S BUILD <br><span class="text-[#E1C1B6]">TOGETHER.</span>
+                    </h2>
+                    
+                    <p class="text-xl font-light opacity-80 mb-16 max-w-2xl">Currently accepting new projects for Q4. Reach out to discuss how we can elevate your digital experience.</p>
+                    
+                    <a href="mailto:hello@ayenett.com" class="bg-[#E1C1B6] text-white px-12 py-6 rounded-full font-bold uppercase tracking-widest hover:bg-white hover:text-[#5C504A] transition-colors duration-300 shadow-2xl text-lg mb-32">
+                        hello@ayenett.com
+                    </a>
+                    
+                    <div class="w-full border-t border-white/20 pt-12 flex flex-col md:flex-row justify-between items-center gap-6">
+                        <p class="text-sm font-medium opacity-60">© 2026 AYENETT. All rights reserved.</p>
+                        <div class="flex gap-8 font-bold text-sm tracking-widest uppercase opacity-80">
+                            <a href="#" class="hover:text-[#E1C1B6] transition-colors">Twitter</a>
+                            <a href="#" class="hover:text-[#E1C1B6] transition-colors">LinkedIn</a>
+                            <a href="#" class="hover:text-[#E1C1B6] transition-colors">Awwwards</a>
+                        </div>
                     </div>
                 </div>
             </section>
