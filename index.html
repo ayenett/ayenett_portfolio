@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NESH® | Cinematic Portfolio</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Using a sleek Grotesk/Inter font for the editorial look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Lenis Smooth Scroll CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline">
+        <span class="cursor-text">VIEW</span>
+    </div>
+
+    <!-- Loading Sequence -->
+    <div class="loader-overlay">
+        <div class="loader-bg"></div>
+        <div class="loader-content">
+            <h1 class="loader-logo">
+                <span class="char">N</span>
+                <span class="char">E</span>
+                <span class="char">S</span>
+                <span class="char">H</span>
+            </h1>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-hidden">
+        <div class="logo">
+            <a href="#" class="nav-link magnetic" data-cursor="-hidden">NESH®</a>
+        </div>
+        <div class="nav-links">
+            <a href="#about" class="nav-link magnetic" data-cursor="-hidden">About</a>
+            <a href="#projects" class="nav-link magnetic" data-cursor="-hidden">Projects</a>
+            <a href="#contact" class="nav-link magnetic" data-cursor="-hidden">Contact</a>
+        </div>
+    </nav>
+
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+
+            <!-- Hero Section -->
+            <section class="hero" id="hero">
+                <div class="hero-content">
+                    <div class="hero-intro reveal-text">
+                        <span>AWWWARDS WINNING DEVELOPER</span>
+                    </div>
+                    
+                    <h1 class="hero-headline">
+                        <div class="line-mask">
+                            <span class="hero-headline-line">DIGITAL</span>
+                        </div>
+                        <div class="line-mask">
+                            <span class="hero-headline-line">STORYTELLING</span>
+                        </div>
+                    </h1>
+
+                    <div class="hero-support reveal-text">
+                        <p>Crafting immersive web experiences <br>that push the boundaries of design.</p>
+                    </div>
+                </div>
+
+                <div class="scroll-indicator fade-in">
+                    <span class="scroll-text">SCROLL</span>
+                    <div class="scroll-line">
+                        <div class="scroll-progress"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cinematic Timeline (About) -->
+            <section class="timeline" id="about">
+                <div class="timeline-container">
+                    <div class="timeline-track">
+                        <div class="timeline-line"></div>
+                        <div class="timeline-progress"></div>
+                    </div>
+                    
+                    <div class="timeline-content">
+                        <div class="timeline-milestone">
+                            <h2 class="milestone-year blur-reveal">2026</h2>
+                            <h3 class="milestone-title blur-reveal">The Pinnacle</h3>
+                            <p class="milestone-desc blur-reveal">Pushing boundaries with WebGL and immersive GSAP experiences for luxury brands globally.</p>
+                        </div>
+                        
+                        <div class="timeline-milestone">
+                            <h2 class="milestone-year blur-reveal">2025</h2>
+                            <h3 class="milestone-title blur-reveal">Awwwards Recognition</h3>
+                            <p class="milestone-desc blur-reveal">Multiple Site of the Day awards for breaking traditional grid layouts and creating cinematic motion.</p>
+                        </div>
+                        
+                        <div class="timeline-milestone">
+                            <h2 class="milestone-year blur-reveal">2024</h2>
+                            <h3 class="milestone-title blur-reveal">Foundation</h3>
+                            <p class="milestone-desc blur-reveal">Establishing the core philosophy of design engineering: where aesthetics meet flawless execution.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fullscreen Projects -->
+            <section class="projects" id="projects">
+                
+                <div class="project-fullscreen" data-cursor="-project">
+                    <div class="project-bg" style="background-image: url('assets/project_1.png');"></div>
+                    <div class="project-overlay"></div>
+                    <div class="project-info">
+                        <h2 class="project-title blur-reveal">NOVA</h2>
+                        <span class="project-meta blur-reveal">UI / UX / MOTION</span>
+                    </div>
+                </div>
+
+                <div class="project-fullscreen" data-cursor="-project">
+                    <div class="project-bg" style="background-image: url('assets/project_2.png');"></div>
+                    <div class="project-overlay"></div>
+                    <div class="project-info">
+                        <h2 class="project-title blur-reveal">AURA</h2>
+                        <span class="project-meta blur-reveal">DIGITAL EXPERIENCE</span>
+                    </div>
+                </div>
+
+                <div class="project-fullscreen" data-cursor="-project">
+                    <div class="project-bg" style="background-image: url('assets/hero_abstract.png');"></div>
+                    <div class="project-overlay"></div>
+                    <div class="project-info">
+                        <h2 class="project-title blur-reveal">STUDIO</h2>
+                        <span class="project-meta blur-reveal">ART DIRECTION</span>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Contact Section -->
+            <section class="contact" id="contact">
+                <div class="contact-content">
+                    <div class="line-mask">
+                        <a href="mailto:hello@nesh.com" class="huge-cta magnetic" data-cursor="-hidden">LET'S TALK</a>
+                    </div>
+                    <div class="social-links blur-reveal">
+                        <a href="#" class="magnetic" data-cursor="-hidden">TWITTER</a>
+                        <a href="#" class="magnetic" data-cursor="-hidden">INSTAGRAM</a>
+                        <a href="#" class="magnetic" data-cursor="-hidden">LINKEDIN</a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="main.js"></script>
+</body>
+</html>

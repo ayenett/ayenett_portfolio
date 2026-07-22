@@ -1,0 +1,454 @@
+:root {
+  --bg-color: #030303;
+  --text-color: #FFFFFF;
+  --accent-gray: #7a7a7a;
+  --font-primary: "Inter", sans-serif;
+  
+  --spacing-sm: 2vh;
+  --spacing-md: 5vh;
+  --spacing-lg: 15vh;
+  --spacing-xl: 25vh;
+  
+  --ease-custom: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: none !important; /* Hide default cursor */
+}
+
+html, body {
+  width: 100%;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Custom Cursor */
+.cursor-dot,
+.cursor-outline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--text-color);
+}
+
+.cursor-outline {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: width 0.3s var(--ease-custom), height 0.3s var(--ease-custom), background-color 0.3s var(--ease-custom), border-color 0.3s var(--ease-custom);
+}
+
+.cursor-text {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--bg-color);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-custom);
+}
+
+/* Cursor States */
+.cursor-outline.hover-magnetic {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: transparent;
+}
+.cursor-dot.hover-magnetic {
+  opacity: 0;
+}
+
+.cursor-outline.hover-project {
+  width: 100px;
+  height: 100px;
+  background-color: var(--text-color);
+  border-color: var(--text-color);
+  mix-blend-mode: difference;
+}
+.cursor-outline.hover-project .cursor-text {
+  opacity: 1;
+}
+.cursor-dot.hover-project {
+  opacity: 0;
+}
+
+.cursor-outline.cursor-hidden,
+.cursor-dot.cursor-hidden {
+  opacity: 0 !important;
+}
+
+
+/* Loading Sequence */
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.loader-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-color);
+  transform-origin: bottom;
+}
+
+.loader-logo {
+  position: relative;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 300;
+  letter-spacing: 0.5em;
+  color: var(--text-color);
+  overflow: hidden;
+  display: flex;
+}
+
+.loader-logo .char {
+  display: inline-block;
+  transform: translateY(100%);
+}
+
+/* Typography Base */
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.line-mask {
+  overflow: hidden;
+  display: block;
+}
+
+.blur-reveal, .reveal-text {
+  opacity: 0;
+}
+
+/* Navigation */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 3vh 5vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  mix-blend-mode: difference;
+  opacity: 0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 3vw;
+}
+
+.nav-link {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+/* Hero Section */
+.hero {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 5vw;
+  position: relative;
+}
+
+.hero-intro {
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  color: var(--accent-gray);
+  margin-bottom: 3vh;
+}
+
+.hero-headline {
+  font-size: clamp(4rem, 10vw, 160px);
+  line-height: 0.9;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.hero-headline-line {
+  display: inline-block;
+  transform: translateY(110%);
+}
+
+.hero-support {
+  margin-top: 5vh;
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  line-height: 1.4;
+  color: var(--accent-gray);
+  max-width: 400px;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 5vh;
+  right: 5vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1vh;
+  opacity: 0;
+}
+
+.scroll-text {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--accent-gray);
+}
+
+.scroll-line {
+  width: 1px;
+  height: 60px;
+  background-color: rgba(255,255,255,0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  background-color: var(--text-color);
+  animation: scrollAnim 2s infinite ease-in-out;
+}
+
+@keyframes scrollAnim {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(350%); }
+}
+
+/* Timeline (About) */
+.timeline {
+  padding: var(--spacing-xl) 5vw;
+  position: relative;
+}
+
+.timeline-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 10vw;
+}
+
+.timeline-track {
+  width: 1px;
+  position: relative;
+}
+
+.timeline-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255,255,255,0.1);
+}
+
+.timeline-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background-color: var(--text-color);
+}
+
+.timeline-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  padding: 10vh 0;
+}
+
+.timeline-milestone {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+}
+
+.milestone-year {
+  font-size: clamp(3rem, 6vw, 6rem);
+  font-weight: 300;
+  line-height: 1;
+  color: rgba(255,255,255,0.2);
+}
+
+.milestone-title {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 400;
+}
+
+.milestone-desc {
+  font-size: 1.1rem;
+  color: var(--accent-gray);
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+/* Fullscreen Projects */
+.projects {
+  width: 100%;
+}
+
+.project-fullscreen {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.project-bg {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.8s var(--ease-custom);
+  will-change: transform;
+}
+
+.project-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  transition: background 0.8s var(--ease-custom);
+}
+
+.project-fullscreen:hover .project-bg {
+  transform: scale(1.05);
+}
+
+.project-fullscreen:hover .project-overlay {
+  background: rgba(0,0,0,0.2);
+}
+
+.project-info {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  pointer-events: none;
+}
+
+.project-title {
+  font-size: clamp(4rem, 12vw, 150px);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 2vh;
+}
+
+.project-meta {
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  color: var(--accent-gray);
+}
+
+/* Contact */
+.contact {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5vw;
+}
+
+.contact-content {
+  text-align: center;
+}
+
+.huge-cta {
+  font-size: clamp(3rem, 10vw, 120px);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  position: relative;
+  display: inline-block;
+}
+
+.huge-cta::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--text-color);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.6s var(--ease-custom);
+}
+
+.huge-cta:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 3vw;
+  margin-top: 5vh;
+}
+
+.social-links a {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--accent-gray);
+  transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+  color: var(--text-color);
+}
+
+/* Lenis Settings */
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
