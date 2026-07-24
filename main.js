@@ -77,107 +77,112 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Stage 2: Fixed Timeline Drawing
-        const journeyPath = document.getElementById('journey-path');
-        const timelineStage = document.getElementById('timeline-stage');
+        const flipbookEl = document.getElementById('flipbook');
+        const flipbookWrapper = document.getElementById('flipbook-wrapper');
+        const openBtn = document.getElementById('btn-open');
+        const prevBtn = document.getElementById('btn-prev');
+        const nextBtn = document.getElementById('btn-next');
+        const storybookSection = document.getElementById('storybook-section');
         
-        if (journeyPath && timelineStage) {
-            // Function to safely calculate and apply dash array
-            const setupPath = () => {
-                const pathLength = journeyPath.getTotalLength();
-                // Set a massive dash array in CSS just in case, but overwrite it here with the exact length
-                journeyPath.style.strokeDasharray = pathLength;
-                journeyPath.style.strokeDashoffset = pathLength;
-            };
+        console.log("Checking PageFlip:", window.St, window.PageFlip);
+        
+        if (flipbookEl) {
+            if (!window.St || !window.St.PageFlip) {
+                alert("PageFlip JS not found! window.St = " + typeof window.St);
+                return;
+            }
             
-            // Wait a tick for SVG to render to get true length
-            setTimeout(setupPath, 100);
-            window.addEventListener('resize', setupPath);
+            try {
+                const pageFlip = new St.PageFlip(flipbookEl, {
+                    width: 600, // base width
+                    height: 650, // base height
+                    size: "stretch",
+                    minWidth: 315,
+                    maxWidth: 1000,
+                    minHeight: 400,
+                    maxHeight: 1400,
+                    drawShadow: true,
+                    showCover: true,
+                    mobileScrollSupport: false,
+                    maxShadowOpacity: 0.5,
+                });
 
-            gsap.to(journeyPath, {
-                strokeDashoffset: 0,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: timelineStage,
-                    start: "top 60%", // Start drawing earlier
-                    end: "bottom 80%",
-                    scrub: 1
+                const pages = Array.from(document.querySelectorAll('.book-page'));
+                if (pages.length > 0) {
+                    pageFlip.loadFromHTML(pages);
+                    
+                    // Initialize the closed book position (centered)
+                    if (flipbookWrapper) {
+                        flipbookWrapper.style.transform = "translateX(-25%)";
+                    }
                 }
-            });
 
-            // Milestone Nodes and Cards
-            const nodes = document.querySelectorAll('.milestone-node');
-            const cards = document.querySelectorAll('.milestone-card');
-            
-            nodes.forEach((node, i) => {
-                const card = cards[i];
-                
-                // Pop node
-                gsap.from(node, {
-                    scale: 0,
-                    opacity: 0,
-                    duration: 0.6,
-                    ease: "back.out(2)",
-                    scrollTrigger: {
-                        trigger: node,
-                        start: "top 60%",
-                        toggleActions: "play none none reverse"
-                    }
-                });
-                
-                // Slide card
-                gsap.from(card, {
-                    y: 50,
-                    opacity: 0,
-                    duration: 0.8,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: node, // trigger on the node so they sync
-                        start: "top 60%",
-                        toggleActions: "play none none reverse"
-                    }
-                });
+                // Background Music Setup
+                const bgMusic = new Audio('assets/santa-s-great-treasure-pecan-pie-main-version-44475-02-12.mp3');
+                bgMusic.loop = true;
+                bgMusic.volume = 0.5;
 
-                // Background Immersive Crossfade
-                const bgId = `bg-milestone-${card.dataset.index}`;
-                const bgImg = document.getElementById(bgId);
-                if (bgImg) {
-                    gsap.to(bgImg, {
-                        opacity: 0.8, // Fade in the background image
-                        scale: 1, // Slight zoom out effect as it appears
-                        duration: 1,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: node,
-                            start: "top 70%",
-                            end: "top 10%",
-                            toggleActions: "play reverse play reverse"
+                // Open Button
+                if(openBtn) {
+                    openBtn.addEventListener('click', () => {
+                        bgMusic.play().catch(err => console.log("Audio play blocked by browser:", err));
+                        pageFlip.flipNext();
+                    });
+                }
+
+                if(prevBtn) {
+                    prevBtn.addEventListener('click', () => {
+                        pageFlip.flipPrev();
+                    });
+                }
+                
+                if(nextBtn) {
+                    nextBtn.addEventListener('click', () => {
+                        const totalPages = pageFlip.getPageCount();
+                        if (pageFlip.getCurrentPageIndex() >= totalPages - 2) {
+                            pageFlip.flip(0);
+                        } else {
+                            pageFlip.flipNext();
                         }
                     });
                 }
 
-                // Popups Animation
-                const popups = card.querySelectorAll('.milestone-popup');
-                if (popups.length > 0) {
-                    gsap.fromTo(popups, 
-                        { scale: 0.5, opacity: 0, y: 40 },
-                        {
-                            scale: 1,
-                            opacity: 1,
-                            y: 0,
-                            duration: 0.8,
-                            stagger: 0.15,
-                            ease: "back.out(1.5)",
-                            scrollTrigger: {
-                                trigger: node,
-                                start: "top 70%", // Appear when coming into view
-                                end: "top 20%", // Disappear when leaving top
-                                toggleActions: "play reverse play reverse"
-                            }
+                pageFlip.on('flip', (e) => {
+                    // If flipping back to cover (page 0), center the cover and pause music
+                    if(e.data === 0) {
+                        bgMusic.pause();
+                        openBtn.classList.remove('hidden');
+                        prevBtn.classList.add('hidden');
+                        nextBtn.classList.add('hidden');
+                        if (flipbookWrapper) flipbookWrapper.style.transform = "translateX(-25%)";
+                    } else {
+                        // Play music if it was paused and user flips away from cover
+                        if (bgMusic.paused) {
+                            bgMusic.play().catch(err => console.log("Audio play blocked:", err));
                         }
-                    );
-                }
-            });
+                        openBtn.classList.add('hidden');
+                        
+                        const totalPages = pageFlip.getPageCount();
+                        // If it's the last page (back cover), hide next button and auto-flip to front after a delay
+                        if (e.data >= totalPages - 2) {
+                            nextBtn.classList.add('hidden');
+                            setTimeout(() => {
+                                // Only flip back if we are still on the last page
+                                if (pageFlip.getCurrentPageIndex() >= totalPages - 2) {
+                                    pageFlip.flip(0);
+                                }
+                            }, 500); // Reduced delay for faster transition
+                        } else {
+                            nextBtn.classList.remove('hidden');
+                        }
+                        
+                        prevBtn.classList.remove('hidden');
+                        if (flipbookWrapper) flipbookWrapper.style.transform = "translateX(0)";
+                    }
+                });
+            } catch (err) {
+                console.error("PAGEFLIP ERROR:", err);
+            }
         }
 
         // Stage 3: Achievement Cards Parallax

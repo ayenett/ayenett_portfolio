@@ -11,16 +11,63 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Caveat:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Lenis Smooth Scroll CSS -->
     <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
+
+    <!-- PageFlip JS for 3D Book -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
+
+    <script>
+        window.addEventListener('error', function(e) {
+            const errDiv = document.createElement('div');
+            errDiv.style.cssText = 'position:fixed;top:0;left:0;width:100%;background:red;color:white;z-index:9999;padding:20px;font-family:monospace;';
+            errDiv.innerHTML = 'ERROR: ' + e.message + ' at ' + e.filename + ':' + e.lineno;
+            document.body.appendChild(errDiv);
+        });
+    </script>
 
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #F9F6F1;
             color: #8E7E73;
+        }
+
+        /* Scrapbook Styles */
+        .font-serif-cormorant { font-family: 'Cormorant Garamond', serif; }
+        .font-handwritten { font-family: 'Caveat', cursive; }
+        .font-sans-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .scrapbook-bg {
+            background-color: #F8F3EC;
+            background-image: linear-gradient(to bottom, #F9F6F1 0%, transparent 200px), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+        }
+        .polaroid-frame {
+            background-color: #FFFDF8;
+            padding: 12px 12px 40px 12px;
+            box-shadow: 0 15px 35px rgba(74, 50, 32, 0.12);
+        }
+        .tape {
+            position: absolute;
+            width: 80px;
+            height: 24px;
+            background-color: rgba(232, 215, 196, 0.85);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        .sticky-note {
+            background-color: #FBF7F1;
+            box-shadow: 2px 4px 15px rgba(74, 50, 32, 0.08);
+            border-radius: 2px 2px 12px 2px;
+        }
+        .notebook-card {
+            background-color: #FFFDF8;
+            background-image: repeating-linear-gradient(transparent, transparent 27px, rgba(74, 50, 32, 0.1) 28px);
+            background-attachment: local;
+            border-left: 2px solid rgba(225, 193, 182, 0.5);
+            box-shadow: 0 4px 15px rgba(74, 50, 32, 0.05);
         }
         
         /* Soft, elegant glassmorphism matching the pink/pearly theme */
@@ -179,142 +226,404 @@
                     </div>
                 </div>
 
-                <!-- STAGE 2: The Winding Career Journey (Timeline) -->
-                <div id="timeline-wrapper" class="relative w-full h-[3600px] mb-40 hidden md:block">
+                
+                <!-- STAGE 2: Interactive Storybook -->
+                <div id="storybook-section" class="relative w-full min-h-[120vh] bg-[#FDFBF7] flex flex-col items-center justify-center py-32 overflow-hidden font-sans-jakarta">
                     
-                    <!-- Sticky Immersive Backgrounds -->
-                    <div class="sticky top-0 w-full h-screen z-0 overflow-hidden">
-                        <img id="bg-milestone-0" src="assets/project_1.png" class="absolute inset-0 w-full h-full object-cover opacity-0 milestone-bg transition-transform duration-1000 scale-110">
-                        <img id="bg-milestone-1" src="assets/project_2.png" class="absolute inset-0 w-full h-full object-cover opacity-0 milestone-bg transition-transform duration-1000 scale-110">
-                        <img id="bg-milestone-2" src="assets/project_1.png" class="absolute inset-0 w-full h-full object-cover opacity-0 milestone-bg transition-transform duration-1000 scale-110" style="filter: sepia(0.5);">
-                        <img id="bg-milestone-3" src="assets/project_2.png" class="absolute inset-0 w-full h-full object-cover opacity-0 milestone-bg transition-transform duration-1000 scale-110" style="filter: grayscale(0.8);">
-                        <!-- Blending Overlay so cards remain readable -->
-                        <div class="absolute inset-0 bg-gradient-to-b from-[#F9F6F1] via-[#F9F6F1]/80 to-[#F9F6F1] backdrop-blur-[2px]"></div>
-                    </div>
+                    <!-- Background Typography Removed as requested -->
 
-                    <!-- The Scrolling Timeline Stage -->
-                    <div id="timeline-stage" class="absolute top-0 w-full h-full max-w-[1400px] left-1/2 -translate-x-1/2 z-20 pt-32 pb-32">
-                        <!-- SVG Path for drawing effect -->
-                        <svg preserveAspectRatio="none" viewBox="0 0 100 100" class="absolute inset-0 w-full h-full pointer-events-none">
-                            <path id="journey-path" d="M 50 0 C 50 8, 75 12, 75 20 C 75 30, 25 30, 25 40 C 25 50, 75 50, 75 60 C 75 70, 25 70, 25 80 C 25 90, 50 92, 50 100" fill="none" stroke="#E1C1B6" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" />
-                        </svg>
-
-                        <!-- Milestone 1 -->
-                        <div class="absolute w-5 h-5 rounded-full bg-[#D6BD9F] border-[5px] border-[#F9F6F1] left-[75%] top-[20%] -translate-x-1/2 -translate-y-1/2 z-30 shadow-lg milestone-node"></div>
-                        <div class="absolute right-[28%] top-[20%] -translate-y-1/2 w-[450px] milestone-card" data-index="0">
-                            
-                            <!-- Popups for Milestone 1 (Further away and more of them) -->
-                            <img src="assets/project_1.png" class="milestone-popup absolute -top-32 -right-40 w-48 h-48 object-cover rounded-3xl shadow-2xl rotate-12 opacity-0 pointer-events-none z-10 filter grayscale">
-                            <img src="assets/project_2.png" class="milestone-popup absolute -bottom-20 -right-24 w-32 h-32 object-cover rounded-full shadow-xl -rotate-12 opacity-0 pointer-events-none z-0">
-                            <div class="milestone-popup absolute -bottom-12 -left-20 bg-white text-[#5C504A] font-bold text-sm px-6 py-3 rounded-full shadow-2xl -rotate-6 opacity-0 pointer-events-none z-10 border border-[#E1C1B6]/30">
-                                🏆 Global Clients
-                            </div>
-                            <img src="assets/project_1.png" class="milestone-popup absolute top-1/2 -left-32 w-36 h-36 object-cover rounded-2xl shadow-2xl -rotate-12 opacity-0 pointer-events-none z-0 filter sepia">
-                            
-                            <div class="glass-card p-12 rounded-[2.5rem] shadow-2xl hover:-translate-y-3 transition-transform duration-700 group relative z-20 bg-white/70 backdrop-blur-xl">
-                                <h2 class="text-[#E1C1B6] text-8xl font-black mb-4 leading-none group-hover:scale-105 transition-transform origin-left duration-500">'24</h2>
-                                <h4 class="text-3xl font-bold text-[#5C504A] mb-4">Independent Studio</h4>
-                                <p class="text-[#8E7E73] font-light leading-relaxed text-lg">Partnering with global brands and award-winning agencies to deliver bespoke Webflow experiences that push boundaries.</p>
-                            </div>
+                    <!-- Book Container -->
+                    <div class="relative z-10 w-full max-w-[1200px] h-[650px] md:h-[750px] mx-auto md:px-4 mb-24">
+                        
+                        <!-- Open Book Button & Controls -->
+                        <div id="book-controls" class="absolute left-1/2 -translate-x-1/2 bottom-4 md:bottom-8 z-50 flex gap-4 transition-all duration-500">
+                            <button id="btn-prev" class="hidden w-12 h-12 bg-white/80 rounded-full shadow-lg flex items-center justify-center text-[#8F7469] hover:bg-white transition-colors">
+                                &larr;
+                            </button>
+                            <button id="btn-open" class="bg-[#E8D7C4] text-[#5C504A] px-8 py-3 rounded-full font-bold shadow-lg border border-[#5C504A]/10 hover:bg-[#DBC3AC] transition-colors flex items-center gap-2 group">
+                                Open the Book <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                            </button>
+                            <button id="btn-next" class="hidden w-12 h-12 bg-white/80 rounded-full shadow-lg flex items-center justify-center text-[#8F7469] hover:bg-white transition-colors">
+                                &rarr;
+                            </button>
                         </div>
 
-                        <!-- Milestone 2 -->
-                        <div class="absolute w-5 h-5 rounded-full bg-[#D6BD9F] border-[5px] border-[#F9F6F1] left-[25%] top-[40%] -translate-x-1/2 -translate-y-1/2 z-30 shadow-lg milestone-node"></div>
-                        <div class="absolute left-[28%] top-[40%] -translate-y-1/2 w-[450px] milestone-card" data-index="1">
-                            
-                            <!-- Popups for Milestone 2 -->
-                            <img src="assets/project_2.png" class="milestone-popup absolute -bottom-32 -right-32 w-48 h-48 object-cover rounded-full shadow-2xl -rotate-12 opacity-0 pointer-events-none z-10 border-8 border-white">
-                            <img src="assets/project_1.png" class="milestone-popup absolute -top-20 -right-20 w-36 h-36 object-cover rounded-2xl shadow-xl rotate-6 opacity-0 pointer-events-none z-0">
-                            <div class="milestone-popup absolute -top-16 -left-16 bg-[#5C504A] text-[#F9F6F1] font-bold text-sm px-6 py-3 rounded-full shadow-2xl rotate-3 opacity-0 pointer-events-none z-10">
-                                💻 1M+ Monthly Users
-                            </div>
-                            <div class="milestone-popup absolute top-1/3 -right-40 bg-white text-[#D6BD9F] font-bold text-base px-5 py-4 rounded-xl shadow-2xl rotate-12 opacity-0 pointer-events-none z-0">
-                                SaaS Platform
-                            </div>
+                        <!-- PageFlip Wrapper -->
+                        <div id="flipbook-wrapper" class="w-full transition-transform duration-1000 ease-in-out" style="transform: translateX(-25%);">
+                            <div id="flipbook" class="mx-auto"><!-- COVER (FRONT) -->
+                            <div class="book-page page-cover bg-[#C5ADA2] rounded-r-xl overflow-hidden relative border-l border-[#A3897C]">
+                                <div class="absolute inset-0 opacity-40 bg-[url('https://www.transparenttextures.com/patterns/leather.png')] pointer-events-none"></div>
+                                <div class="absolute inset-0 shadow-[inset_-10px_0_20px_rgba(0,0,0,0.1)] pointer-events-none"></div>
+                                
+                                <div class="relative h-full flex flex-col items-center justify-center p-8">
+                                    <div class="border border-[#8F7469]/40 w-full h-full flex flex-col items-center justify-center p-6 text-center">
+                                        <h3 class="text-[#6D544B] font-bold tracking-[0.2em] text-xs mb-4">THE STORY OF</h3>
+                                        <h1 class="font-sans text-5xl md:text-7xl font-black text-[#5C4239] tracking-tighter mb-8 leading-none">AYENETT</h1>
+                                        <span class="text-[#8B6E64] text-2xl mb-8">♥</span>
+                                        <div class="w-24 h-[1px] bg-[#8B6E64]/40 mb-8"></div>
+                                        <p class="font-handwritten text-2xl text-[#4A3B36] leading-relaxed">A journey of curiosity,<br>growth, and ambition.</p>
+                                    </div>
+                                </div>
+                                <div class="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-16 bg-[#8F7469] rounded-l-lg shadow-lg border border-[#5C4239]/20 flex items-center justify-start pl-2">
+                                    <div class="w-4 h-4 rounded-full bg-[#C5ADA2] shadow-inner"></div>
+                                </div>
+                                <!-- Binder Ring Graphic Overlay (Right Side) -->
+                                <div class="absolute -left-1 top-4 bottom-4 w-6 bg-gradient-to-r from-black/20 to-transparent"></div>
+                            </div><!-- PAGE 01 / CHAPTER 1 LEFT -->
+                            <div class="book-page bg-[#FDFBF7] relative border-l border-black/5">
+                                <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none"></div>
+                                <div class="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-black/10 to-transparent z-0 pointer-events-none"></div>
+                                
+                                <div class="page-content p-8 md:p-12 h-full flex flex-col justify-center relative z-10">
+                                    <div class="inline-block relative mb-4 self-start">
+                                        <div class="absolute inset-0 bg-[#E3A99B]/40 -rotate-2 scale-110 shadow-sm mix-blend-multiply"></div>
+                                        <span class="text-xs font-bold text-[#6D544B] tracking-[0.15em] relative z-10 px-2 py-1 uppercase">Chapter 01</span>
+                                    </div>
+                                    <h2 class="font-serif-cormorant text-5xl md:text-6xl text-[#4A3B36] font-bold leading-tight mb-2">The Beginning</h2>
+                                    <h3 class="text-[10px] md:text-xs font-bold text-[#A8887F]/80 mb-8 tracking-widest uppercase">2017 - 2023 | High School</h3>
+                                    
+                                    <p class="font-handwritten text-xl md:text-2xl text-[#6F5A4B] leading-relaxed mt-4 pr-4">
+                                        I walked into high school with a heart full of curiosity and a mind full of questions. I didn't know where this journey would lead me, but I was ready to embrace every moment.
+                                    </p>
+                                    <div class="mt-8 text-[#A8887F] text-2xl font-handwritten">♡</div>
+                                </div>
+                                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#A8887F]/50 tracking-widest">01 / 14</div>
+                            </div><!-- PAGE 02 / CHAPTER 1 RIGHT -->
+                            <div class="book-page bg-[#FDFBF7] relative border-r border-black/5">
+                                <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none"></div>
+                                <div class="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-black/10 to-transparent z-0 pointer-events-none"></div>
+                                
+                                <div class="page-content relative w-full h-full p-8 z-10 overflow-hidden">
+                                    <!-- Portrait Photo -->
+                                    <div class="absolute top-6 left-4 md:left-8 z-10 rotate-2 shadow-lg rounded-md overflow-hidden border border-black/10">
+                                        <img src="assets/IMG_0081.JPG" class="w-[160px] md:w-[220px] h-[220px] md:h-[300px] object-cover">
+                                    </div>
+                                    
+                                    <!-- Highlights Note -->
+                                    <div class="absolute top-4 md:top-8 right-2 md:right-6 w-40 md:w-56 p-4 md:p-5 bg-[#F5EEDC] shadow-md -rotate-2 z-20">
+                                        <div class="absolute -top-2 right-4 rotate-6 w-12 h-4 bg-white/60 backdrop-blur-sm mix-blend-multiply z-20"></div>
+                                        <h4 class="font-handwritten text-xl md:text-2xl text-[#8A5A35] mb-2 border-b border-[#8A5A35]/20 pb-1">Highlights</h4>
+                                        <ul class="list-none text-[#5C504A] space-y-2 font-handwritten text-base md:text-xl leading-tight mt-3">
+                                            <li class="flex gap-2"><span class="text-[#8A5A35]">*</span> Gifted Program (Science-Math)</li>
+                                            <li class="flex gap-2"><span class="text-[#8A5A35]">*</span> Student Council</li>
+                                            <li class="flex gap-2"><span class="text-[#8A5A35]">*</span> GPA 3.87</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <!-- Group Photo -->
+                                    <div class="absolute bottom-6 md:bottom-10 right-6 md:right-10 z-30 -rotate-3">
+                                        <div class="shadow-lg rounded-md overflow-hidden border border-black/10 mb-2">
+                                            <img src="assets/IMG_0095.JPG" class="w-[140px] md:w-[180px] h-[90px] md:h-[120px] object-cover">
+                                        </div>
+                                        <p class="w-full text-center font-handwritten text-[10px] md:text-xs text-[#5C504A]">The place where it all began ~ ♡</p>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#A8887F]/50 tracking-widest">02 / 14</div>
+                            </div><!-- PAGE 03 / CHAPTER 2 LEFT -->
+                            <div class="book-page bg-[#FDFBF7] relative border-l border-black/5">
+                                <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none z-10"></div>
+                                <div class="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-black/10 to-transparent z-20 pointer-events-none"></div>
+                                
+                                <div class="absolute inset-0 w-full h-full p-0 m-0 z-0">
+                                    <img src="assets/Screenshot%202569-07-24%20at%2015.46.26.png" class="w-full h-full object-cover">
+                                </div>
+                                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#5C504A] bg-white/80 px-2 py-1 rounded-md tracking-widest z-30 shadow-sm backdrop-blur-sm">03 / 14</div>
+                            </div><!-- PAGE 04 / CHAPTER 2 RIGHT -->
+                            <div class="book-page bg-[#FDFBF7] relative border-r border-black/5">
+                                <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none"></div>
+                                <div class="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-black/10 to-transparent z-0 pointer-events-none"></div>
+                                
+                                <div class="page-content p-8 md:p-12 h-full flex flex-col justify-center relative z-10">
+                                    <div class="inline-block relative mb-4 self-start">
+                                        <div class="absolute inset-0 bg-[#E3A99B]/40 -rotate-2 scale-110 shadow-sm mix-blend-multiply"></div>
+                                        <span class="text-xs font-bold text-[#6D544B] tracking-[0.15em] relative z-10 px-2 py-1 uppercase">Chapter 02</span>
+                                    </div>
+                                    <h2 class="font-serif-cormorant text-5xl md:text-6xl text-[#4A3B36] font-bold leading-tight mb-2">Building Foundations</h2>
+                                    <h3 class="text-[10px] md:text-xs font-bold text-[#A8887F]/80 mb-8 tracking-widest uppercase">2023 - Present | University Life</h3>
+                                    
+                                    <p class="font-handwritten text-xl md:text-2xl text-[#6F5A4B] leading-relaxed mt-4 pr-4">
+                                        Stepping into Mae Fah Luang University (Computer Engineering) opened a new world. Coding, problem-solving, and late-night debugging sessions.
+                                    </p>
+                                    
+                                    <div class="mt-10 p-4 border border-[#A8887F]/20 rounded-md bg-white/50 w-[80%] shadow-sm">
+                                        <p class="font-sans text-sm md:text-base font-bold text-[#4A3B36] mb-1">GPA 3.21</p>
+                                        <p class="font-sans text-xs md:text-sm text-[#A8887F]">Bachelor of Engineering</p>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#A8887F]/50 tracking-widest">04 / 14</div>
+                            </div><!-- PAGE 05 / CHAPTER 3 LEFT -->
+                            <div class="book-page bg-[#FDFBF7] relative border-l border-black/5">
+                                <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none z-0"></div>
+                                <div class="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-black/10 to-transparent z-10 pointer-events-none"></div>
+                                
+                                <div class="page-content p-8 md:p-10 h-full flex flex-col relative z-20">
+                                    <div class="inline-block relative mb-4 self-start">
+                                        <div class="absolute inset-0 bg-[#E3A99B]/40 -rotate-2 scale-110 shadow-sm mix-blend-multiply"></div>
+                                        <span class="text-xs font-bold text-[#6D544B] tracking-[0.15em] relative z-10 px-2 py-1 uppercase">Chapter 03</span>
+                                    </div>
+                                    <h2 class="font-serif-cormorant text-5xl md:text-6xl text-[#4A3B36] font-bold leading-tight mb-2">Challenges <br> <span class="text-[#C19586]">&</span> Growth</h2>
+                                    <h3 class="text-[10px] md:text-xs font-bold text-[#A8887F]/80 mb-6 tracking-widest uppercase">2023 - 2025 | CAMPUS LIFE</h3>
+                                    
+                                    <p class="font-sans text-sm md:text-[15px] text-[#4A3B36] leading-relaxed w-[90%] font-medium">
+                                        Every challenge pushed me to grow stronger.<br>
+                                        I stepped out of my comfort zone,<br>
+                                        discovered my passion for teaching and leadership,<br>
+                                        and learned that growth happens in action,<br>
+                                        not in hesitation.
+                                    </p>
+                                    
+                                    <div class="grid grid-cols-2 gap-3 mt-6 w-[95%] relative z-10">
+                                        <div class="bg-white p-3 shadow-sm border border-black/5 relative">
+                                            <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-3 bg-[#E3A99B]/30 rotate-3 mix-blend-multiply"></div>
+                                            <h4 class="font-bold text-[11px] md:text-xs text-[#4A3B36] mb-1 flex items-center gap-1">📣 Cheerleader</h4>
+                                            <p class="text-[#8B6E64] font-handwritten text-base leading-tight">Leading with passion & teamwork.</p>
+                                            <div class="absolute bottom-1 right-2 text-[#C19586] text-[10px]">♡</div>
+                                        </div>
+                                        <div class="bg-white p-3 shadow-sm border border-black/5 relative">
+                                            <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-3 bg-[#D4B58A]/30 -rotate-2 mix-blend-multiply"></div>
+                                            <h4 class="font-bold text-[11px] md:text-xs text-[#4A3B36] mb-1 flex items-center gap-1">💻 Hackathons</h4>
+                                            <p class="text-[#8B6E64] font-handwritten text-base leading-tight">Solving problems & building ideas.</p>
+                                            <div class="absolute bottom-1 right-2 text-[#C19586] text-[10px]">♡</div>
+                                        </div>
+                                        <div class="bg-white p-3 shadow-sm border border-black/5 relative">
+                                            <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-3 bg-blue-200/40 rotate-1 mix-blend-multiply"></div>
+                                            <h4 class="font-bold text-[11px] md:text-xs text-[#4A3B36] mb-1 flex items-center gap-1">👥 Activities</h4>
+                                            <p class="text-[#8B6E64] font-handwritten text-base leading-tight">Organizing events & memories.</p>
+                                            <div class="absolute bottom-1 right-2 text-[#C19586] text-[10px]">♡</div>
+                                        </div>
+                                        <div class="bg-white p-3 shadow-sm border border-black/5 relative">
+                                            <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-3 bg-red-200/30 -rotate-3 mix-blend-multiply"></div>
+                                            <h4 class="font-bold text-[11px] md:text-xs text-[#4A3B36] mb-1 flex items-center gap-1">🤝 Volunteer</h4>
+                                            <p class="text-[#8B6E64] font-handwritten text-base leading-tight">Giving back through actions.</p>
+                                            <div class="absolute bottom-1 right-2 text-[#C19586] text-[10px]">♡</div>
+                                        </div>
+                                    </div>
 
-                            <div class="glass-card p-12 rounded-[2.5rem] shadow-2xl hover:-translate-y-3 transition-transform duration-700 group relative z-20 bg-white/70 backdrop-blur-xl">
-                                <h2 class="text-[#D6BD9F] text-8xl font-black mb-4 leading-none group-hover:scale-105 transition-transform origin-left duration-500">'21</h2>
-                                <h4 class="text-3xl font-bold text-[#5C504A] mb-4">Lead Developer</h4>
-                                <p class="text-[#8E7E73] font-light leading-relaxed text-lg">Spearheaded technical development for high-traffic luxury e-commerce and scalable SaaS platforms.</p>
-                            </div>
+
+                                </div>
+                                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#A8887F]/50 tracking-widest z-30">05 / 14</div>
+                            </div><!-- PAGE 06 / CHAPTER 3 RIGHT -->
+                            <div class="book-page bg-[#FDFBF7] relative border-r border-black/5">
+                                <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none z-0"></div>
+                                <div class="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-black/10 to-transparent z-10 pointer-events-none"></div>
+                                
+                                <div class="page-content relative w-full h-full z-20">
+                                    <!-- Decorations -->
+                                    <svg class="absolute top-[35%] right-[20%] w-10 h-10 text-[#D4B58A] opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M12 2l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1z"></path>
+                                    </svg>
+                                    <svg class="absolute top-[40%] right-[30%] w-12 h-12 text-[#C19586] opacity-30 rotate-[30deg]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M5 9c0-3 3-5 5-5s5 2 5 5-3 5-5 5-5-2-5-5z"></path>
+                                        <path d="M10 14v6l3-3m-3 3l-3-3"></path>
+                                    </svg>
+
+                                    <!-- Top Left Polaroid (IMG_0103) -->
+                                    <div class="absolute top-6 left-6 w-[170px] md:w-[210px] -rotate-2 shadow-lg bg-white p-2 pb-8 border border-gray-100 z-10">
+                                        <div class="absolute -top-2 left-1/2 -translate-x-1/2 rotate-1 w-8 h-4 bg-white/70 backdrop-blur-sm z-20 mix-blend-multiply border border-black/5"></div>
+                                        <img src="assets/IMG_0103.jpg" class="w-full aspect-square object-cover">
+                                        <p class="absolute bottom-2 w-full text-center font-handwritten text-sm text-[#5C504A]">Team spirit ♡</p>
+                                    </div>
+
+                                    <!-- Top Right Polaroid (IMG_0100) -->
+                                    <div class="absolute top-10 right-6 w-[160px] md:w-[200px] rotate-3 shadow-lg bg-white p-2 pb-14 border border-gray-100 z-20">
+                                        <div class="absolute -top-2 left-4 -rotate-3 w-8 h-4 bg-white/70 backdrop-blur-sm z-20 mix-blend-multiply border border-black/5"></div>
+                                        <img src="assets/IMG_0100.JPG" class="w-full aspect-square object-cover">
+                                        <p class="absolute bottom-2 w-full text-center font-handwritten text-sm text-[#5C504A] leading-tight px-1">
+                                            <span class="text-[10px] text-[#8B6E64] block mb-0.5">28 Jan MediHack 2026</span>
+                                            Every experience<br>shapes who I am. ♡
+                                        </p>
+                                    </div>
+
+                                    <!-- Center Pink Sticky Note (HR Friendly text) -->
+                                    <div class="absolute top-[220px] md:top-[260px] left-10 md:left-14 w-[160px] md:w-[210px] p-4 bg-[#EBD8D1] shadow-md -rotate-3 z-30">
+                                        <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-[#B38779] shadow-md border-2 border-white/50"></div>
+                                        <p class="font-handwritten text-sm md:text-lg text-[#6D544B] text-center leading-tight">Driven by passion,<br>fueled by challenges,<br>and always eager<br>to learn. <span class="text-[#C19586]">♡</span></p>
+                                    </div>
+
+                                    <!-- Bottom Right Polaroid (IMG_0082 - Uniform) -->
+                                    <div class="absolute bottom-10 right-4 md:right-8 w-[160px] md:w-[190px] -rotate-3 shadow-lg bg-white p-2 pb-10 border border-gray-100 z-10">
+                                        <img src="assets/IMG_0082.JPG" class="w-full aspect-square object-cover">
+                                        <p class="absolute bottom-2 w-full text-center font-handwritten text-[13px] md:text-[15px] text-[#5C504A] leading-tight px-1">Faculty Sign Bearer ♡</p>
+                                    </div>
+
+                                    <!-- Bottom Center Polaroid (IMG_0086 - Green Shirt) -->
+                                    <div class="absolute bottom-8 right-[170px] md:right-[240px] w-[160px] md:w-[190px] rotate-3 shadow-lg bg-white p-2 pb-10 border border-gray-100 z-10">
+                                        <img src="assets/IMG_0086.JPG" class="w-full aspect-square object-cover">
+                                        <p class="absolute bottom-2 w-full text-center font-handwritten text-[13px] md:text-[15px] text-[#5C504A] leading-tight px-1">Always ready to step up. ♡</p>
+                                    </div>
+
+                                    <!-- Bottom Left Ripped Note -->
+                                    <div class="absolute bottom-6 left-6 w-[150px] md:w-[180px] p-3 bg-[#E3CBB3]/50 shadow-sm border border-[#D4B58A]/30 z-30 -rotate-2" style="clip-path: polygon(0% 2%, 98% 0%, 100% 98%, 2% 100%);">
+                                        <div class="absolute -top-2 left-4 rotate-12 w-8 h-4 bg-white/60 backdrop-blur-sm z-20 mix-blend-multiply"></div>
+                                        <p class="font-handwritten text-sm md:text-base text-[#5C4239] text-center leading-tight">Turning obstacles into<br>opportunities. <span class="text-[#C19586]">♡</span></p>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#A8887F]/50 tracking-widest z-30">06 / 14</div>
+                            </div><!-- PAGE 07 / CHAPTER 4 LEFT -->
+                            <div class="book-page bg-[#FDFBF7] relative border-l border-black/5">
+                                <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none"></div>
+                                <div class="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-black/10 to-transparent z-0 pointer-events-none"></div>
+                                
+                                <div class="page-content p-8 md:p-12 h-full flex flex-col justify-center relative z-10">
+                                    <div class="inline-block relative mb-4 self-start">
+                                        <div class="absolute inset-0 bg-[#E3A99B]/40 -rotate-2 scale-110 shadow-sm mix-blend-multiply"></div>
+                                        <span class="text-xs font-bold text-[#6D544B] tracking-[0.15em] relative z-10 px-2 py-1 uppercase">Chapter 04</span>
+                                    </div>
+                                    <h2 class="font-serif-cormorant text-5xl md:text-6xl text-[#4A3B36] font-bold leading-tight mb-2">Work <span class="text-[#C19586]">&</span> Travel USA</h2>
+                                    <h3 class="text-[10px] md:text-xs font-bold text-[#A8887F]/80 mb-8 tracking-widest uppercase">May - Aug 2025 | Real World Experience</h3>
+                                    
+                                    <div class="p-6 bg-[#FDF8F5] shadow-sm border border-[#A8887F]/20 relative">
+                                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-4 bg-white/80 rotate-2 z-10 shadow-sm mix-blend-multiply border border-[#A8887F]/10"></div>
+                                        <h4 class="font-bold text-[#4A3B36] mb-1">🇺🇸 Sales Associate</h4>
+                                        <p class="font-handwritten text-xl text-[#A8887F] mb-4">Summer 2025</p>
+                                        <ul class="text-[#5C504A] space-y-2 text-sm font-medium">
+                                            <li class="flex items-start gap-2"><span class="text-[#8B6E64] font-bold">»</span> Assisted customers and provided recommendations</li>
+                                            <li class="flex items-start gap-2"><span class="text-[#8B6E64] font-bold">»</span> Developed communication & problem-solving skills</li>
+                                            <li class="flex items-start gap-2"><span class="text-[#8B6E64] font-bold">»</span> Thrived in a fast-paced, diverse environment</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#A8887F]/50 tracking-widest">07 / 14</div>
+                            </div><!-- PAGE 08 / CHAPTER 4 RIGHT -->
+                            <div class="book-page bg-[#FDFBF7] relative border-r border-black/5">
+                                <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none"></div>
+                                <div class="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-black/10 to-transparent z-0 pointer-events-none"></div>
+                                
+                                <div class="page-content relative w-full h-full p-8 z-10 overflow-hidden">
+                                    <div class="absolute top-8 left-6 md:left-8 z-10 rotate-3 shadow-lg">
+                                        <div class="absolute -top-2 left-4 rotate-12 w-10 md:w-12 h-4 bg-white/60 backdrop-blur-sm mix-blend-multiply z-20"></div>
+                                        <img src="assets/usa-city.jpg" class="w-[160px] md:w-[220px] h-[110px] md:h-[150px] object-cover p-2 md:p-3 pb-6 md:pb-8 bg-white border border-gray-100">
+                                    </div>
+                                    <div class="absolute top-[140px] md:top-[170px] right-6 md:right-8 z-20 -rotate-4 shadow-lg">
+                                        <img src="assets/usa-flag.jpg" class="w-[100px] md:w-[130px] h-[80px] md:h-[110px] object-cover p-2 md:p-3 bg-white border border-gray-100">
+                                    </div>
+                                    <div class="absolute bottom-8 md:bottom-12 left-10 md:left-16 z-30 rotate-2 shadow-lg">
+                                        <div class="absolute -top-2 left-1/2 -translate-x-1/2 -rotate-2 w-12 h-4 bg-white/60 backdrop-blur-sm shadow-sm z-20 mix-blend-multiply"></div>
+                                        <img src="assets/work-photo.jpg" class="w-[140px] md:w-[170px] h-[140px] md:h-[170px] object-cover p-2 md:p-3 pb-6 md:pb-8 bg-white border border-gray-100">
+                                        <p class="absolute bottom-1 w-full text-center font-handwritten text-[10px] md:text-xs text-[#5C504A]">New place, new lessons ✈️</p>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#A8887F]/50 tracking-widest">08 / 14</div>
+                            </div><!-- PAGE 09 / CHAPTER 5 LEFT -->
+                            <div class="book-page bg-[#FDFBF7] relative border-l border-black/5">
+                                <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none"></div>
+                                <div class="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-black/10 to-transparent z-0 pointer-events-none"></div>
+                                
+                                <div class="page-content p-8 md:p-12 h-full flex flex-col justify-center relative z-10">
+                                    <div class="inline-block relative mb-4 self-start">
+                                        <div class="absolute inset-0 bg-[#E3A99B]/40 -rotate-2 scale-110 shadow-sm mix-blend-multiply"></div>
+                                        <span class="text-xs font-bold text-[#6D544B] tracking-[0.15em] relative z-10 px-2 py-1 uppercase">Chapter 05</span>
+                                    </div>
+                                    <h2 class="font-serif-cormorant text-5xl md:text-6xl text-[#4A3B36] font-bold leading-tight mb-2">Voluntary Internship</h2>
+                                    <h3 class="text-[10px] md:text-xs font-bold text-[#A8887F]/80 mb-8 tracking-widest uppercase">Jun - Jul 2026 | Self-Driven Growth</h3>
+                                    
+                                    <div class="p-6 bg-[#F5F8F6] shadow-sm border border-[#A8887F]/20 relative">
+                                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-4 bg-[#A8887F]/30 -rotate-2 z-10 mix-blend-multiply"></div>
+                                        <h4 class="font-bold text-[#4A3B36] mb-1">💼 Fusion Solution</h4>
+                                        <p class="font-handwritten text-xl text-[#A8887F] mb-4">Summer 2026</p>
+                                        <ul class="text-[#5C504A] space-y-2 text-sm font-medium">
+                                            <li class="flex items-start gap-2"><span class="text-[#8B6E64] font-bold">»</span> Self-driven internship to gain real-world experience</li>
+                                            <li class="flex items-start gap-2"><span class="text-[#8B6E64] font-bold">»</span> Collaborated with professional development teams</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#A8887F]/50 tracking-widest">09 / 14</div>
+                            </div><!-- PAGE 10 / CHAPTER 5 RIGHT -->
+                            <div class="book-page bg-[#FDFBF7] relative border-r border-black/5">
+                                <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none"></div>
+                                <div class="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-black/10 to-transparent z-0 pointer-events-none"></div>
+                                
+                                <div class="page-content relative w-full h-full p-8 z-10 overflow-hidden">
+                                    <div class="absolute top-12 md:top-16 left-8 md:left-10 z-10 -rotate-2 shadow-lg">
+                                        <div class="absolute -top-2 left-1/2 -translate-x-1/2 -rotate-2 w-12 h-4 bg-white/60 backdrop-blur-sm shadow-sm z-20 mix-blend-multiply"></div>
+                                        <img src="assets/project_1.png" class="w-[180px] md:w-[240px] h-[130px] md:h-[180px] object-cover p-2 md:p-3 pb-6 md:pb-8 bg-white filter sepia border border-gray-100">
+                                    </div>
+                                    <div class="absolute bottom-12 md:bottom-20 right-8 md:right-10 z-20 rotate-3 shadow-lg">
+                                        <div class="absolute -top-2 right-4 -rotate-6 w-12 h-4 bg-white/60 backdrop-blur-sm mix-blend-multiply z-20"></div>
+                                        <img src="assets/project_2.png" class="w-[170px] md:w-[220px] h-[120px] md:h-[160px] object-cover p-2 md:p-3 pb-6 md:pb-8 bg-white grayscale border border-gray-100">
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#A8887F]/50 tracking-widest">10 / 14</div>
+                            </div><!-- PAGE 11 / CHAPTER 6 LEFT -->
+                            <div class="book-page bg-[#FDFBF7] relative border-l border-black/5">
+                                <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none"></div>
+                                <div class="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-black/10 to-transparent z-0 pointer-events-none"></div>
+                                
+                                <div class="page-content p-8 md:p-12 h-full flex flex-col justify-center relative z-10">
+                                    <span class="text-xs font-bold text-[#A8887F] tracking-[0.15em] mb-4 uppercase">Chapter 06</span>
+                                    <h2 class="font-serif-cormorant text-4xl md:text-5xl text-[#4A3B36] font-bold mb-2">Cooperative Education</h2>
+                                    <h3 class="text-[10px] md:text-xs font-bold text-[#A8887F]/80 mb-8 tracking-widest uppercase">Jan - Apr 2027 | University Co-op</h3>
+                                    
+                                    <div class="p-6 bg-[#FDF8F5] shadow-sm border border-[#A8887F]/20 relative">
+                                        <div class="absolute -top-3 right-6 w-16 h-4 bg-white/80 rotate-6 z-10 shadow-sm mix-blend-multiply border border-[#A8887F]/10"></div>
+                                        <h4 class="font-bold text-[#4A3B36] mb-1">💼 Fusion Solution</h4>
+                                        <p class="font-handwritten text-xl text-[#A8887F] mb-4">Spring 2027</p>
+                                        <ul class="text-[#5C504A] space-y-2 text-sm font-medium">
+                                            <li class="flex items-start gap-2"><span class="text-[#8B6E64] font-bold">»</span> University co-op program in a professional environment</li>
+                                            <li class="flex items-start gap-2"><span class="text-[#8B6E64] font-bold">»</span> Advanced collaboration with development teams</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#A8887F]/50 tracking-widest">11 / 14</div>
+                            </div><!-- PAGE 12 / CHAPTER 6 RIGHT -->
+                            <div class="book-page bg-[#FDFBF7] relative border-r border-black/5">
+                                <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none"></div>
+                                <div class="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-black/10 to-transparent z-0 pointer-events-none"></div>
+                                
+                                <div class="page-content relative w-full h-full p-8 z-10 overflow-hidden">
+                                    <div class="absolute top-10 md:top-16 right-8 md:right-12 z-10 rotate-2 shadow-lg">
+                                        <div class="absolute -top-2 left-1/2 -translate-x-1/2 rotate-1 w-10 h-4 bg-white/60 backdrop-blur-sm z-20 mix-blend-multiply"></div>
+                                        <img src="assets/classroom-photo.jpg" class="w-[180px] md:w-[230px] h-[130px] md:h-[160px] object-cover p-2 md:p-3 pb-6 md:pb-8 bg-white filter sepia border border-gray-100">
+                                    </div>
+                                    <div class="absolute bottom-12 md:bottom-16 left-6 md:left-10 z-20 -rotate-3 shadow-lg">
+                                        <div class="absolute -top-2 left-4 rotate-12 w-12 h-4 bg-white/60 backdrop-blur-sm mix-blend-multiply z-20"></div>
+                                        <img src="assets/high-school-group-photo.jpg" class="w-[180px] md:w-[230px] h-[130px] md:h-[170px] object-cover p-2 md:p-3 pb-6 md:pb-8 bg-white grayscale border border-gray-100">
+                                        <p class="absolute bottom-1 w-full text-center font-handwritten text-[10px] md:text-xs text-[#5C504A]">Putting skills to work!</p>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#A8887F]/50 tracking-widest">12 / 14</div>
+                            </div><!-- PAGE 13 / CHAPTER 7 LEFT -->
+                            <div class="book-page bg-[#FDFBF7] relative border-l border-black/5 flex flex-col items-center justify-center">
+                                <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none"></div>
+                                <div class="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-black/10 to-transparent z-0 pointer-events-none"></div>
+                                
+                                <div class="page-content p-8 md:p-12 h-full flex flex-col justify-center items-center relative z-10 text-center">
+                                    <span class="text-xs font-bold text-[#A8887F] tracking-[0.15em] mb-4 uppercase">Chapter 07</span>
+                                    <h2 class="font-serif-cormorant text-5xl md:text-6xl text-[#4A3B36] font-bold mb-4">The Future</h2>
+                                    <h3 class="font-handwritten text-3xl md:text-4xl text-[#8B6E64] mb-12">Keep Learning.<br>Keep Building.</h3>
+                                    
+                                    <div class="w-16 h-[1px] bg-[#A8887F]/30 mx-auto mb-10"></div>
+                                    
+                                    <h2 class="font-serif-cormorant text-xl md:text-2xl text-[#2B211B] leading-relaxed italic text-center px-4 md:px-8">
+                                        “I’m still learning.<br>I’m still building.<br>And this is only the beginning.”
+                                    </h2>
+                                </div>
+                                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#A8887F]/50 tracking-widest">13 / 14</div>
+                            </div><!-- PAGE 14 / CHAPTER 7 RIGHT (Back Inside) -->
+                            <div class="book-page bg-[#F0EBE1] border-r border-black/10 relative">
+                                <div class="absolute inset-0 opacity-50 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none"></div>
+                                <div class="absolute inset-0 shadow-[inset_20px_0_30px_rgba(0,0,0,0.05)] pointer-events-none"></div>
+                                
+                                <div class="relative w-full h-full flex items-center justify-center z-10">
+                                    <a href="#contact" class="px-8 py-4 border-2 border-[#8B6E64] text-[#8B6E64] font-bold hover:bg-[#8B6E64] hover:text-[#F0EBE1] transition-colors duration-300 rounded-sm uppercase tracking-widest text-sm shadow-sm">
+                                        Let's Connect &rarr;
+                                    </a>
+                                </div>
+                                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#A8887F]/50 tracking-widest">14 / 14</div>
+                            </div><!-- BACK COVER (OUTSIDE) -->
+                            <div class="book-page page-cover bg-[#C5ADA2] rounded-l-xl overflow-hidden relative border-r border-[#A3897C]">
+                                <div class="absolute inset-0 opacity-40 bg-[url('https://www.transparenttextures.com/patterns/leather.png')] pointer-events-none"></div>
+                                <div class="absolute inset-0 shadow-[inset_10px_0_20px_rgba(0,0,0,0.1)] pointer-events-none"></div>
+                                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-16 bg-[#8F7469] rounded-r-lg shadow-lg border border-[#5C4239]/20"></div>
+                                </div>
                         </div>
 
-                        <!-- Milestone 3 -->
-                        <div class="absolute w-5 h-5 rounded-full bg-[#D6BD9F] border-[5px] border-[#F9F6F1] left-[75%] top-[60%] -translate-x-1/2 -translate-y-1/2 z-30 shadow-lg milestone-node"></div>
-                        <div class="absolute right-[28%] top-[60%] -translate-y-1/2 w-[450px] milestone-card" data-index="2">
-                            
-                            <!-- Popups for Milestone 3 -->
-                            <img src="assets/project_1.png" class="milestone-popup absolute -top-32 -left-32 w-44 h-44 object-cover rounded-3xl shadow-2xl -rotate-6 opacity-0 pointer-events-none z-10 filter sepia">
-                            <img src="assets/project_2.png" class="milestone-popup absolute -bottom-24 -left-16 w-32 h-32 object-cover rounded-xl shadow-xl rotate-12 opacity-0 pointer-events-none z-0">
-                            <div class="milestone-popup absolute -bottom-16 -right-16 bg-[#D6BD9F] text-white font-bold text-sm px-6 py-3 rounded-full shadow-2xl rotate-6 opacity-0 pointer-events-none z-10">
-                                🎓 Graduated
-                            </div>
-                            <div class="milestone-popup absolute top-1/4 -left-48 bg-white text-[#8E7E73] font-bold text-base px-5 py-4 rounded-xl shadow-2xl -rotate-12 opacity-0 pointer-events-none z-0 border border-[#8E7E73]/20">
-                                First Code
-                            </div>
-
-                            <div class="glass-card p-12 rounded-[2.5rem] shadow-2xl hover:-translate-y-3 transition-transform duration-700 group relative z-20 bg-white/70 backdrop-blur-xl">
-                                <h2 class="text-[#8E7E73] text-8xl font-black mb-4 leading-none group-hover:scale-105 transition-transform origin-left duration-500">'18</h2>
-                                <h4 class="text-3xl font-bold text-[#5C504A] mb-4">The Beginning</h4>
-                                <p class="text-[#8E7E73] font-light leading-relaxed text-lg">Started the journey exploring front-end code, interactive design principles, and mastering motion graphics.</p>
-                            </div>
-                        </div>
-
-                        <!-- Milestone 4: High School -->
-                        <div class="absolute w-5 h-5 rounded-full bg-[#D6BD9F] border-[5px] border-[#F9F6F1] left-[25%] top-[80%] -translate-x-1/2 -translate-y-1/2 z-30 shadow-lg milestone-node"></div>
-                        <div class="absolute left-[28%] top-[80%] -translate-y-1/2 w-[450px] milestone-card" data-index="3">
-                            
-                            <!-- Popups for Milestone 4 -->
-                            <img src="assets/project_2.png" class="milestone-popup absolute -top-24 -right-32 w-48 h-36 object-cover rounded-2xl shadow-2xl rotate-12 opacity-0 pointer-events-none z-10">
-                            <img src="assets/project_1.png" class="milestone-popup absolute -bottom-32 -right-12 w-36 h-36 object-cover rounded-full shadow-xl -rotate-6 opacity-0 pointer-events-none z-0">
-                            <div class="milestone-popup absolute -bottom-16 -left-12 bg-white text-[#5C504A] font-bold text-sm px-6 py-3 rounded-full shadow-2xl -rotate-3 opacity-0 pointer-events-none z-10 border-2 border-[#E1C1B6]">
-                                🔬 Science Fair Winner
-                            </div>
-                            <div class="milestone-popup absolute top-1/2 -right-24 bg-[#8E7E73] text-white font-bold text-sm px-5 py-3 rounded-full shadow-xl rotate-6 opacity-0 pointer-events-none z-0">
-                                📚 Club President
-                            </div>
-
-                            <div class="glass-card p-12 rounded-[2.5rem] shadow-2xl hover:-translate-y-3 transition-transform duration-700 group relative z-20 bg-white/70 backdrop-blur-xl">
-                                <h2 class="text-[#E1C1B6] text-8xl font-black mb-4 leading-none group-hover:scale-105 transition-transform origin-left duration-500">'15</h2>
-                                <h4 class="text-3xl font-bold text-[#5C504A] mb-4">High School Education</h4>
-                                <p class="text-[#8E7E73] font-light leading-relaxed text-lg">Discovered a passion for technology and design. Led computer clubs and participated in national science competitions.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mobile Fallback Timeline -->
-                <div class="md:hidden py-20 px-8 relative z-20 mb-20">
-                    <div class="border-l-[3px] border-[#E1C1B6] pl-10 space-y-16 ml-4 relative">
-                        <div class="relative reveal-up">
-                            <div class="absolute w-5 h-5 bg-[#E1C1B6] rounded-full -left-[51px] top-4 border-4 border-[#F9F6F1] shadow-lg"></div>
-                            <div class="glass-card p-8 rounded-3xl">
-                                <h2 class="text-[#E1C1B6] text-6xl font-black mb-2">'24</h2>
-                                <h4 class="text-2xl font-bold text-[#5C504A] mb-2">Independent Studio</h4>
-                                <p class="text-[#8E7E73] font-light">Partnering with global brands to deliver bespoke Webflow experiences.</p>
-                            </div>
-                        </div>
-                        <div class="relative reveal-up">
-                            <div class="absolute w-5 h-5 bg-[#D6BD9F] rounded-full -left-[51px] top-4 border-4 border-[#F9F6F1] shadow-lg"></div>
-                            <div class="glass-card p-8 rounded-3xl">
-                                <h2 class="text-[#D6BD9F] text-6xl font-black mb-2">'21</h2>
-                                <h4 class="text-2xl font-bold text-[#5C504A] mb-2">Lead Developer</h4>
-                                <p class="text-[#8E7E73] font-light">Spearheaded development for high-traffic luxury SaaS platforms.</p>
-                            </div>
-                        </div>
-                        <div class="relative reveal-up">
-                            <div class="absolute w-5 h-5 bg-[#8E7E73] rounded-full -left-[51px] top-4 border-4 border-[#F9F6F1] shadow-lg"></div>
-                            <div class="glass-card p-8 rounded-3xl">
-                                <h2 class="text-[#8E7E73] text-6xl font-black mb-2">'18</h2>
-                                <h4 class="text-2xl font-bold text-[#5C504A] mb-2">The Beginning</h4>
-                                <p class="text-[#8E7E73] font-light">Started the journey exploring interactive design principles.</p>
-                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- STAGE 3: Floating Certifications -->
-                <div class="relative max-w-[1400px] mx-auto px-8 lg:px-24 mb-40 z-20">
+                <div class="relative max-w-[1400px] mx-auto px-8 lg:px-24 mt-40 mb-40 z-20">
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
                         
                         <div class="md:col-span-6 flex flex-col gap-8">
