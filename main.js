@@ -122,9 +122,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 bgMusic.loop = true;
                 bgMusic.volume = 0.5;
 
+                // Sound Effects Setup
+                const flipSound = new Audio('assets/freesound_community-small-page-103398.mp3');
+                const closeSound = new Audio('assets/oxidvideos-book-closing-466850.mp3');
+                flipSound.volume = 0.8;
+                closeSound.volume = 1.0;
+
+                // Mute Button Logic
+                let isMuted = false;
+                const muteBtn = document.getElementById('btn-mute');
+                const iconSoundOn = document.getElementById('icon-sound-on');
+                const iconSoundOff = document.getElementById('icon-sound-off');
+                
+                if (muteBtn) {
+                    muteBtn.addEventListener('click', () => {
+                        isMuted = !isMuted;
+                        bgMusic.muted = isMuted;
+                        flipSound.muted = isMuted;
+                        closeSound.muted = isMuted;
+                        
+                        if (isMuted) {
+                            iconSoundOn.classList.add('hidden');
+                            iconSoundOff.classList.remove('hidden');
+                        } else {
+                            iconSoundOn.classList.remove('hidden');
+                            iconSoundOff.classList.add('hidden');
+                        }
+                    });
+                }
+
                 // Open Button
                 if(openBtn) {
                     openBtn.addEventListener('click', () => {
+                        flipSound.currentTime = 0;
+                        flipSound.play().catch(err => console.log(err));
                         bgMusic.play().catch(err => console.log("Audio play blocked by browser:", err));
                         pageFlip.flipNext();
                     });
@@ -132,12 +163,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if(prevBtn) {
                     prevBtn.addEventListener('click', () => {
+                        // If flipping back to cover
+                        if (pageFlip.getCurrentPageIndex() <= 2) {
+                            closeSound.currentTime = 0;
+                            closeSound.play().catch(err => console.log(err));
+                        } else {
+                            flipSound.currentTime = 0;
+                            flipSound.play().catch(err => console.log(err));
+                        }
                         pageFlip.flipPrev();
                     });
                 }
                 
                 if(nextBtn) {
                     nextBtn.addEventListener('click', () => {
+                        flipSound.currentTime = 0;
+                        flipSound.play().catch(err => console.log(err));
                         const totalPages = pageFlip.getPageCount();
                         if (pageFlip.getCurrentPageIndex() >= totalPages - 2) {
                             pageFlip.flip(0);
@@ -147,6 +188,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
 
+                // Handle dragging sound
+                pageFlip.on('changeState', (e) => {
+                    if (e.data === 'user_fold') {
+                        flipSound.currentTime = 0;
+                        flipSound.play().catch(err => console.log(err));
+                    }
+                });
+
                 pageFlip.on('flip', (e) => {
                     // If flipping back to cover (page 0), center the cover and pause music
                     if(e.data === 0) {
@@ -154,13 +203,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         openBtn.classList.remove('hidden');
                         prevBtn.classList.add('hidden');
                         nextBtn.classList.add('hidden');
+                        if (muteBtn) muteBtn.classList.add('hidden');
                         if (flipbookWrapper) flipbookWrapper.style.transform = "translateX(-25%)";
                     } else {
-                        // Play music if it was paused and user flips away from cover
-                        if (bgMusic.paused) {
+                        // Play music if it was paused and user flips away from cover (and not muted)
+                        if (bgMusic.paused && !isMuted) {
                             bgMusic.play().catch(err => console.log("Audio play blocked:", err));
                         }
                         openBtn.classList.add('hidden');
+                        if (muteBtn) muteBtn.classList.remove('hidden');
                         
                         const totalPages = pageFlip.getPageCount();
                         // If it's the last page (back cover), hide next button and auto-flip to front after a delay
@@ -169,6 +220,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             setTimeout(() => {
                                 // Only flip back if we are still on the last page
                                 if (pageFlip.getCurrentPageIndex() >= totalPages - 2) {
+                                    closeSound.currentTime = 0;
+                                    closeSound.play().catch(err => console.log(err));
                                     pageFlip.flip(0);
                                 }
                             }, 500); // Reduced delay for faster transition

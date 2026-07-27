@@ -236,7 +236,7 @@
                     <div class="relative z-10 w-full max-w-[1200px] h-[650px] md:h-[750px] mx-auto md:px-4 mb-24">
                         
                         <!-- Open Book Button & Controls -->
-                        <div id="book-controls" class="absolute left-1/2 -translate-x-1/2 bottom-4 md:bottom-8 z-50 flex gap-4 transition-all duration-500">
+                        <div id="book-controls" class="absolute left-1/2 -translate-x-1/2 bottom-4 md:bottom-8 z-50 flex gap-4 transition-all duration-500 items-center">
                             <button id="btn-prev" class="hidden w-12 h-12 bg-white/80 rounded-full shadow-lg flex items-center justify-center text-[#8F7469] hover:bg-white transition-colors">
                                 &larr;
                             </button>
@@ -245,6 +245,17 @@
                             </button>
                             <button id="btn-next" class="hidden w-12 h-12 bg-white/80 rounded-full shadow-lg flex items-center justify-center text-[#8F7469] hover:bg-white transition-colors">
                                 &rarr;
+                            </button>
+                            <button id="btn-mute" class="hidden absolute -right-16 md:-right-24 w-12 h-12 bg-white/80 rounded-full shadow-lg flex items-center justify-center text-[#8F7469] hover:bg-white transition-colors" title="Toggle Sound">
+                                <!-- Sound On Icon by default -->
+                                <svg id="icon-sound-on" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 10v4a2 2 0 002 2h2l4 4V4L9 8H7a2 2 0 00-2 2z" />
+                                </svg>
+                                <!-- Sound Off Icon (hidden by default) -->
+                                <svg id="icon-sound-off" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h2.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                                </svg>
                             </button>
                         </div>
 
@@ -753,7 +764,18 @@
                         
                         <!-- Project Card 1 -->
                         <div class="horizontal-card relative w-[75vw] md:w-[45vw] lg:w-[35vw] h-[90%] flex-shrink-0 group overflow-hidden rounded-[2rem] bg-[#231F1C] border border-white/5">
-                            <img src="assets/project_1.png" alt="Nova Finance" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-1000 ease-out mix-blend-luminosity group-hover:mix-blend-normal">
+                            <!-- 3D Perspective Video Mockup Composite -->
+                            <div class="absolute inset-0 opacity-50 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000 ease-out mix-blend-luminosity group-hover:mix-blend-normal overflow-hidden pointer-events-none z-0">
+                                <svg viewBox="0 0 858 632" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full" overflow="visible">
+                                    <foreignObject x="0" y="0" width="858" height="632" overflow="visible">
+                                        <div style="position:relative; width:100%; height:100%; overflow:visible;">
+                                            <video src="assets/nova_finance_video_2.mov" autoplay loop muted playsinline 
+                                                   style="position:absolute; top:0; left:0; width:1920px; height:1048px; max-width:none !important; object-fit:fill; transform-origin: 0 0; transform: matrix3d(0.196700,-0.008600,0.000000,-0.000048,-0.031121,0.252343,0.000000,-0.000032,0.000000,0.000000,1.000000,0.000000,193.000000,151.000000,0.000000,1.000000);"></video>
+                                        </div>
+                                    </foreignObject>
+                                    <image href="assets/nova_finance_mockup_new_transparent.png" x="0" y="0" width="858" height="632" />
+                                </svg>
+                            </div>
                             <div class="absolute inset-0 bg-gradient-to-t from-[#1A1715] via-[#1A1715]/40 to-transparent"></div>
                             
                             <div class="absolute inset-0 p-8 flex flex-col justify-between z-10">
@@ -762,25 +784,25 @@
                                         <span class="text-xs font-medium">01</span>
                                     </div>
                                     <div class="flex gap-2">
-                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">CMS</span>
-                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">API</span>
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">Frontend</span>
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">Landing Page</span>
                                     </div>
                                 </div>
                                 
                                 <div class="relative">
-                                    <h3 class="text-3xl font-black mb-3">Nova Finance</h3>
-                                    <p class="text-[#8E7E73] font-light text-sm max-w-[85%]">High-performance Webflow platform for financial analytics.</p>
+                                    <h3 class="text-3xl font-black mb-3">GoNest</h3>
+                                    <p class="text-[#8E7E73] font-light text-sm max-w-[85%]">A modern frontend landing page showcasing UI/UX for a conceptual ride-sharing platform.</p>
                                     
-                                    <div class="absolute right-0 bottom-0 w-12 h-12 bg-[#231F1C] group-hover:bg-[#D6BD9F] rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl cursor-pointer">
+                                    <a href="https://gonestwebsite.vercel.app/" target="_blank" class="absolute right-0 bottom-0 w-12 h-12 bg-[#231F1C] group-hover:bg-[#D6BD9F] rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl cursor-pointer">
                                         <span class="text-white group-hover:text-[#1A1715] font-bold -rotate-45 group-hover:rotate-0 transition-transform duration-300">→</span>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Project Card 2 -->
                         <div class="horizontal-card relative w-[75vw] md:w-[45vw] lg:w-[35vw] h-[90%] flex-shrink-0 group overflow-hidden rounded-[2rem] bg-[#231F1C] border border-white/5">
-                            <img src="assets/project_2.png" alt="Aura Residences" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-1000 ease-out mix-blend-luminosity group-hover:mix-blend-normal">
+                            <img src="assets/project_2.png" alt="Aura Residences" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000 ease-out mix-blend-luminosity group-hover:mix-blend-normal">
                             <div class="absolute inset-0 bg-gradient-to-t from-[#1A1715] via-[#1A1715]/40 to-transparent"></div>
                             
                             <div class="absolute inset-0 p-8 flex flex-col justify-between z-10">
@@ -807,7 +829,16 @@
 
                         <!-- Project Card 3 -->
                         <div class="horizontal-card relative w-[75vw] md:w-[45vw] lg:w-[35vw] h-[90%] flex-shrink-0 group overflow-hidden rounded-[2rem] bg-[#231F1C] border border-white/5">
-                            <img src="assets/project_1.png" alt="Happy Ring" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-1000 ease-out mix-blend-luminosity group-hover:mix-blend-normal" style="filter: hue-rotate(180deg);">
+                            <!-- Video Mockup Composite -->
+                            <div class="absolute inset-0 opacity-50 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000 ease-out mix-blend-luminosity group-hover:mix-blend-normal overflow-hidden pointer-events-none z-0">
+                                <svg viewBox="0 0 1448 1086" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full">
+                                    <!-- Use object-fit: contain to show the full video without squishing -->
+                                    <foreignObject x="352" y="177" width="790" height="491">
+                                        <video src="assets/happy_ring_video.mov" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:contain; border-radius: 4px;"></video>
+                                    </foreignObject>
+                                    <image href="assets/happy_ring_mockup_transparent.png" x="0" y="0" width="1448" height="1086" />
+                                </svg>
+                            </div>
                             <div class="absolute inset-0 bg-gradient-to-t from-[#1A1715] via-[#1A1715]/40 to-transparent"></div>
                             
                             <div class="absolute inset-0 p-8 flex flex-col justify-between z-10">
@@ -816,25 +847,25 @@
                                         <span class="text-xs font-medium">03</span>
                                     </div>
                                     <div class="flex gap-2">
-                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">Shopify</span>
-                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">SEO</span>
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">Web App</span>
+                                        <span class="px-3 py-1 rounded-full border border-white/20 backdrop-blur-md text-[10px] uppercase tracking-wider font-medium">Finance</span>
                                     </div>
                                 </div>
                                 
                                 <div class="relative">
-                                    <h3 class="text-3xl font-black mb-3">Happy Ring</h3>
-                                    <p class="text-[#8E7E73] font-light text-sm max-w-[85%]">Seamless headless e-commerce integration for wellness wearables.</p>
+                                    <h3 class="text-3xl font-black mb-3">CatFund</h3>
+                                    <p class="text-[#8E7E73] font-light text-sm max-w-[85%]">A gamified personal finance app designed to make saving money and budget planning fun and engaging.</p>
                                     
-                                    <div class="absolute right-0 bottom-0 w-12 h-12 bg-[#231F1C] group-hover:bg-[#D6BD9F] rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl cursor-pointer">
+                                    <a href="https://catfund-ji2v.vercel.app/login" target="_blank" class="absolute right-0 bottom-0 w-12 h-12 bg-[#231F1C] group-hover:bg-[#D6BD9F] rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl cursor-pointer">
                                         <span class="text-white group-hover:text-[#1A1715] font-bold -rotate-45 group-hover:rotate-0 transition-transform duration-300">→</span>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Project Card 4 -->
                         <div class="horizontal-card relative w-[75vw] md:w-[45vw] lg:w-[35vw] h-[90%] flex-shrink-0 group overflow-hidden rounded-[2rem] bg-[#231F1C] border border-white/5">
-                            <img src="assets/project_2.png" alt="Nexus AI" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-1000 ease-out mix-blend-luminosity group-hover:mix-blend-normal" style="filter: sepia(0.5);">
+                            <img src="assets/project_2.png" alt="Nexus AI" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000 ease-out mix-blend-luminosity group-hover:mix-blend-normal" style="filter: sepia(0.5);">
                             <div class="absolute inset-0 bg-gradient-to-t from-[#1A1715] via-[#1A1715]/40 to-transparent"></div>
                             
                             <div class="absolute inset-0 p-8 flex flex-col justify-between z-10">
