@@ -1,0 +1,6 @@
+*.mov
+*.MOV
+assets/*.mov
+assets/*.MOV
+scratch/
+.DS_Store
