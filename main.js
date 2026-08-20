@@ -337,21 +337,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         observer.observe(workSection);
 
-        const isWorkInViewport = () => {
-            if (!workSection) return false;
-            const rect = workSection.getBoundingClientRect();
-            return (
-                rect.top < window.innerHeight &&
-                rect.bottom > 0
-            );
-        };
-
-        const resumeAudioIfInWork = () => {
-            if (isWorkInViewport()) {
-                playWorkAudio();
-            }
-        };
-
         // Pause background music immediately when clicking any project arrow button / external link
         const projectLinks = workSection.querySelectorAll('a');
         projectLinks.forEach(link => {
@@ -360,15 +345,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Resume background music automatically when returning back to the portfolio tab or window
+        // Resume background music automatically when returning back to the portfolio tab
         document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) {
-                resumeAudioIfInWork();
+            if (!document.hidden && isWorkSectionActive) {
+                playWorkAudio();
             }
         });
 
-        ['focus', 'click', 'pointerdown', 'mousemove', 'scroll', 'wheel', 'touchmove', 'touchstart'].forEach(evt => {
-            window.addEventListener(evt, resumeAudioIfInWork, { passive: true });
+        window.addEventListener('focus', () => {
+            if (isWorkSectionActive) {
+                playWorkAudio();
+            }
         });
 
         // Setup the ScrollTrigger to pin and scrub (Exact layout pin parameters)
