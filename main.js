@@ -458,36 +458,6 @@ function initCertificatesCarousel() {
             image: "assets/Screenshot%202569-07-24%20at%2015.46.26.png",
             pdf: null,
             description: "Demonstrated academic excellence in Computer Engineering with strong GPA 3.21, focusing on software architecture, algorithms, and core engineering principles."
-        },
-        {
-            id: 4,
-            title: "Webflow Development Certification",
-            issuer: "Webflow Academy",
-            year: "2023",
-            category: "Web Development",
-            image: "assets/project_1.png",
-            pdf: null,
-            description: "Certification demonstrating mastery in building complex, scalable Webflow architectures, motion design, and responsive layout systems."
-        },
-        {
-            id: 5,
-            title: "Frontend Professional Development",
-            issuer: "Frontend Academy",
-            year: "2021",
-            category: "Software Engineering",
-            image: "assets/project_2.png",
-            pdf: null,
-            description: "Advanced certification covering modern JavaScript, React architecture, state management, and modern CSS layout frameworks."
-        },
-        {
-            id: 6,
-            title: "Interactive Media & UI/UX Design",
-            issuer: "Mae Fah Luang University",
-            year: "2024",
-            category: "Design & UX",
-            image: "assets/Designer%20(35).png",
-            pdf: null,
-            description: "Specialized certification in user experience research, interactive prototyping, and creative design systems for modern web applications."
         }
     ];
 
