@@ -334,6 +334,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         observer.observe(workSection);
 
+        // Pause background music immediately when clicking any project arrow button / external link
+        const projectLinks = workSection.querySelectorAll('a');
+        projectLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                pauseWorkAudio();
+            });
+        });
+
         // Setup the ScrollTrigger to pin and scrub (Exact layout pin parameters)
         ScrollTrigger.create({
             trigger: workSection,
