@@ -431,38 +431,62 @@ function initCertificatesCarousel() {
     const certificatesData = [
         {
             id: 1,
+            title: "Google AI Essentials Certification",
+            issuer: "Google",
+            year: "2024",
+            category: "Artificial Intelligence",
+            image: "assets/google_ai_cert.png",
+            pdf: "assets/Google_AI.pdf",
+            description: "Official Google AI certification demonstrating mastery in generative AI fundamentals, prompt engineering techniques, and practical AI workflow integration."
+        },
+        {
+            id: 2,
+            title: "L'Oréal Brandstorm Tech & Innovation",
+            issuer: "L'Oréal",
+            year: "2024",
+            category: "Innovation & Tech",
+            image: "assets/loreal_cert.png",
+            pdf: "assets/Loreal.pdf",
+            description: "Official L'Oréal Brandstorm certification recognizing excellence in technological innovation, digital product design, and creative brand solutions."
+        },
+        {
+            id: 3,
             title: "Academic Excellence & Engineering Studies",
             issuer: "Mae Fah Luang University",
             year: "2023 - Present",
             category: "Computer Engineering",
             image: "assets/Screenshot%202569-07-24%20at%2015.46.26.png",
+            pdf: null,
             description: "Demonstrated academic excellence in Computer Engineering with strong GPA 3.21, focusing on software architecture, algorithms, and core engineering principles."
         },
         {
-            id: 2,
+            id: 4,
             title: "Webflow Development Certification",
             issuer: "Webflow Academy",
             year: "2023",
             category: "Web Development",
             image: "assets/project_1.png",
+            pdf: null,
             description: "Certification demonstrating mastery in building complex, scalable Webflow architectures, motion design, and responsive layout systems."
         },
         {
-            id: 3,
+            id: 5,
             title: "Frontend Professional Development",
             issuer: "Frontend Academy",
             year: "2021",
             category: "Software Engineering",
             image: "assets/project_2.png",
+            pdf: null,
             description: "Advanced certification covering modern JavaScript, React architecture, state management, and modern CSS layout frameworks."
         },
         {
-            id: 4,
+            id: 6,
             title: "Interactive Media & UI/UX Design",
             issuer: "Mae Fah Luang University",
             year: "2024",
             category: "Design & UX",
             image: "assets/Designer%20(35).png",
+            pdf: null,
             description: "Specialized certification in user experience research, interactive prototyping, and creative design systems for modern web applications."
         }
     ];
@@ -745,6 +769,18 @@ function initCertificatesCarousel() {
         if (lightboxIssuer) lightboxIssuer.textContent = cert.issuer;
         if (lightboxYear) lightboxYear.textContent = cert.year;
         if (lightboxDesc) lightboxDesc.textContent = cert.description;
+
+        const pdfLink = document.getElementById('lightbox-pdf-link');
+        if (pdfLink) {
+            if (cert.pdf) {
+                pdfLink.href = cert.pdf;
+                pdfLink.classList.remove('hidden');
+                pdfLink.classList.add('inline-flex');
+            } else {
+                pdfLink.classList.add('hidden');
+                pdfLink.classList.remove('inline-flex');
+            }
+        }
 
         lightboxModal.classList.remove('opacity-0', 'pointer-events-none');
         lightboxModal.classList.add('opacity-100');
