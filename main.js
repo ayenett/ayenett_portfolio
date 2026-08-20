@@ -314,95 +314,53 @@ document.addEventListener('DOMContentLoaded', () => {
             ease: "none"
         });
 
-        // Audio Toast Prompt & Autoplay Handlers for Selected Work section
-        const audioToast = document.getElementById('audio-autoplay-toast');
-        const btnEnableAudio = document.getElementById('btn-enable-audio');
-
-        const hideAudioToast = () => {
-            if (audioToast) {
-                audioToast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
-                audioToast.classList.remove('translate-y-0', 'opacity-100');
-            }
-        };
-
-        const showAudioToast = () => {
-            if (audioToast && window.isWorkSectionActive && window.workAudio && window.workAudio.paused) {
-                audioToast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
-                audioToast.classList.add('translate-y-0', 'opacity-100');
-            }
-        };
-
+        // Automatic Scroll Audio Handlers for Selected Work section
         const playWorkAudio = () => {
             window.isWorkSectionActive = true;
-
-            const tryPlay = (mediaEl) => {
-                if (!mediaEl) return Promise.reject();
-                mediaEl.volume = 0.8;
-                mediaEl.muted = false;
-                return mediaEl.play();
-            };
-
             if (window.workVideo) {
-                tryPlay(window.workVideo).then(() => {
-                    hideAudioToast();
-                }).catch(() => {
-                    if (window.workAudio) {
-                        tryPlay(window.workAudio).then(() => {
-                            hideAudioToast();
-                        }).catch(() => {
-                            showAudioToast();
-                        });
-                    } else {
-                        showAudioToast();
-                    }
-                });
-            } else if (window.workAudio) {
-                tryPlay(window.workAudio).then(() => {
-                    hideAudioToast();
-                }).catch(() => {
-                    showAudioToast();
-                });
+                window.workVideo.muted = false;
+                window.workVideo.volume = 0.8;
+                if (window.workVideo.paused) {
+                    window.workVideo.play().catch(e => {});
+                }
+            }
+            if (window.workAudio) {
+                window.workAudio.muted = false;
+                window.workAudio.volume = 0.8;
+                if (window.workAudio.paused) {
+                    window.workAudio.play().catch(e => {});
+                }
             }
         };
 
         const pauseWorkAudio = () => {
             window.isWorkSectionActive = false;
-            hideAudioToast();
             if (window.workVideo) {
-                window.workVideo.pause();
-                window.workVideo.currentTime = 0;
+                window.workVideo.muted = true;
             }
             if (window.workAudio) {
-                window.workAudio.pause();
-                window.workAudio.currentTime = 0;
+                window.workAudio.muted = true;
             }
         };
 
-        const unlockAndPlayAudio = () => {
+        const unlockAndUnmute = () => {
             if (window.isWorkSectionActive) {
-                if (window.workVideo && window.workVideo.paused) {
-                    window.workVideo.volume = 0.8;
+                if (window.workVideo) {
                     window.workVideo.muted = false;
-                    window.workVideo.play().then(() => hideAudioToast()).catch(e => {});
+                    window.workVideo.volume = 0.8;
+                    if (window.workVideo.paused) window.workVideo.play().catch(e => {});
                 }
-                if (window.workAudio && window.workAudio.paused) {
-                    window.workAudio.volume = 0.8;
+                if (window.workAudio) {
                     window.workAudio.muted = false;
-                    window.workAudio.play().then(() => hideAudioToast()).catch(e => {});
+                    window.workAudio.volume = 0.8;
+                    if (window.workAudio.paused) window.workAudio.play().catch(e => {});
                 }
             }
         };
 
         ['mousemove', 'pointermove', 'scroll', 'wheel', 'touchmove', 'touchstart', 'click', 'pointerdown', 'keydown'].forEach(evt => {
-            window.addEventListener(evt, unlockAndPlayAudio, { passive: true });
+            window.addEventListener(evt, unlockAndUnmute, { passive: true });
         });
-
-        if (btnEnableAudio) {
-            btnEnableAudio.addEventListener('click', (e) => {
-                e.stopPropagation();
-                unlockAndPlayAudio();
-            });
-        }
 
         // Setup the ScrollTrigger to pin and scrub (Exact original pin parameters)
         ScrollTrigger.create({
