@@ -22,23 +22,7 @@ gsap.ticker.lagSmoothing(0);
 document.addEventListener('DOMContentLoaded', () => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Global Work Section Audio & Video Setup ("After Hours - The Weeknd")
-    const workAudioEl = document.getElementById('work-audio-element');
-    const workVideoEl = document.getElementById('work-video-element');
-    
-    window.workAudio = workAudioEl || new Audio('assets/after_hours_the_weeknd.mp3');
-    window.workVideo = workVideoEl;
 
-    if (window.workAudio) {
-        window.workAudio.preload = 'auto';
-        window.workAudio.loop = true;
-        window.workAudio.volume = 0.8;
-    }
-    if (window.workVideo) {
-        window.workVideo.preload = 'auto';
-        window.workVideo.loop = true;
-        window.workVideo.volume = 0.8;
-    }
 
     // 1. Reveal Animations for all sections
     const revealElements = document.querySelectorAll('.reveal-up');
@@ -156,7 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     muteBtn.addEventListener('click', () => {
                         isMuted = !isMuted;
                         bgMusic.muted = isMuted;
-                        window.workAudio.muted = isMuted;
+                        const workAudioEl = document.getElementById('workAudio');
+                        if (workAudioEl) workAudioEl.muted = isMuted;
                         flipSound.muted = isMuted;
                         closeSound.muted = isMuted;
                         
@@ -314,55 +299,39 @@ document.addEventListener('DOMContentLoaded', () => {
             ease: "none"
         });
 
-        // Automatic Scroll Audio Handlers for Selected Work section
+        // Clean Scroll-Triggered Audio System using IntersectionObserver (#work section trigger)
         const playWorkAudio = () => {
-            window.isWorkSectionActive = true;
-            if (window.workVideo) {
-                window.workVideo.muted = false;
-                window.workVideo.volume = 0.8;
-                if (window.workVideo.paused) {
-                    window.workVideo.play().catch(e => {});
-                }
-            }
-            if (window.workAudio) {
-                window.workAudio.muted = false;
-                window.workAudio.volume = 0.8;
-                if (window.workAudio.paused) {
-                    window.workAudio.play().catch(e => {});
-                }
+            const audio = document.getElementById('workAudio');
+            if (audio) {
+                audio.play().catch((error) => {
+                    console.warn('Browser blocked autoplay:', error);
+                });
             }
         };
 
         const pauseWorkAudio = () => {
-            window.isWorkSectionActive = false;
-            if (window.workVideo) {
-                window.workVideo.pause();
-                window.workVideo.currentTime = 0;
-            }
-            if (window.workAudio) {
-                window.workAudio.pause();
-                window.workAudio.currentTime = 0;
+            const audio = document.getElementById('workAudio');
+            if (audio) {
+                audio.pause();
             }
         };
 
-        const unlockAndUnmute = () => {
-            if (window.isWorkSectionActive) {
-                if (window.workVideo) {
-                    window.workVideo.muted = false;
-                    window.workVideo.volume = 0.8;
-                    if (window.workVideo.paused) window.workVideo.play().catch(e => {});
-                }
-                if (window.workAudio) {
-                    window.workAudio.muted = false;
-                    window.workAudio.volume = 0.8;
-                    if (window.workAudio.paused) window.workAudio.play().catch(e => {});
-                }
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        playWorkAudio();
+                    } else {
+                        pauseWorkAudio();
+                    }
+                });
+            },
+            {
+                threshold: 0.25
             }
-        };
+        );
 
-        ['mousemove', 'pointermove', 'scroll', 'wheel', 'touchmove', 'touchstart', 'click', 'pointerdown', 'keydown'].forEach(evt => {
-            window.addEventListener(evt, unlockAndUnmute, { passive: true });
-        });
+        observer.observe(workSection);
 
         // Setup the ScrollTrigger to pin and scrub (Exact original pin parameters)
         ScrollTrigger.create({
@@ -373,24 +342,6 @@ document.addEventListener('DOMContentLoaded', () => {
             animation: tween,
             scrub: 1, // Smooth scrubbing
             invalidateOnRefresh: true // Recalculate on resize
-        });
-
-        // Dedicated Audio Trigger (Starts instantly as section enters 90% down viewport)
-        ScrollTrigger.create({
-            trigger: workSection,
-            start: "top 90%",
-            end: () => `+=${getScrollAmount() * -1 + window.innerHeight}`,
-            onEnter: playWorkAudio,
-            onEnterBack: playWorkAudio,
-            onLeave: pauseWorkAudio,
-            onLeaveBack: pauseWorkAudio,
-            onToggle: (self) => {
-                if (self.isActive) {
-                    playWorkAudio();
-                } else {
-                    pauseWorkAudio();
-                }
-            }
         });
 
         // Entrance animation for cards when the section is reached
