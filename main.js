@@ -305,17 +305,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (audio) {
                 audio.volume = 0.8;
                 audio.muted = false;
-                const promise = audio.play();
-                if (promise !== undefined) {
-                    promise.catch((error) => {
-                        console.warn('Browser blocked autoplay:', error);
-                        // Autoplay fallback: start media stream muted then unmute
-                        audio.muted = true;
-                        audio.play().then(() => {
-                            audio.muted = false;
-                        }).catch(() => {});
-                    });
-                }
+                audio.play().catch((error) => {
+                    console.warn('Browser blocked autoplay:', error);
+                });
             }
         };
 
@@ -337,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             },
             {
-                threshold: 0.1
+                threshold: 0.25
             }
         );
 
