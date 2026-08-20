@@ -304,38 +304,71 @@ document.addEventListener('DOMContentLoaded', () => {
             ease: "none"
         });
 
-        // Audio playback handlers for Selected Work section
+        // Audio Toast Prompt & Autoplay Handlers for Selected Work section
+        const audioToast = document.getElementById('audio-autoplay-toast');
+        const btnEnableAudio = document.getElementById('btn-enable-audio');
+
+        const hideAudioToast = () => {
+            if (audioToast) {
+                audioToast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+                audioToast.classList.remove('translate-y-0', 'opacity-100');
+            }
+        };
+
+        const showAudioToast = () => {
+            if (audioToast && window.isWorkSectionActive && window.workAudio && window.workAudio.paused) {
+                audioToast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+                audioToast.classList.add('translate-y-0', 'opacity-100');
+            }
+        };
+
         const playWorkAudio = () => {
             window.isWorkSectionActive = true;
             if (window.workAudio) {
                 window.workAudio.volume = 0.8;
                 window.workAudio.muted = false;
                 if (window.workAudio.paused) {
-                    window.workAudio.play().catch(err => console.log("Play waiting for motion:", err));
+                    window.workAudio.play().then(() => {
+                        hideAudioToast();
+                    }).catch(err => {
+                        console.log("Autoplay blocked by browser policy:", err);
+                        showAudioToast();
+                    });
+                } else {
+                    hideAudioToast();
                 }
             }
         };
 
         const pauseWorkAudio = () => {
             window.isWorkSectionActive = false;
+            hideAudioToast();
             if (window.workAudio) {
                 window.workAudio.pause();
                 window.workAudio.currentTime = 0;
             }
         };
 
-        // Resume playing on ANY user motion (scroll, wheel, touch, move) when active
-        const triggerAudioOnMotion = () => {
+        const unlockAndPlayAudio = () => {
             if (window.isWorkSectionActive && window.workAudio && window.workAudio.paused) {
                 window.workAudio.volume = 0.8;
                 window.workAudio.muted = false;
-                window.workAudio.play().catch(e => {});
+                window.workAudio.play().then(() => {
+                    hideAudioToast();
+                }).catch(e => {});
             }
         };
 
-        ['scroll', 'wheel', 'touchmove', 'touchstart', 'mousemove', 'pointermove', 'keydown', 'click'].forEach(evt => {
-            window.addEventListener(evt, triggerAudioOnMotion, { passive: true });
+        ['click', 'touchstart', 'pointerdown', 'keydown'].forEach(evt => {
+            window.addEventListener(evt, unlockAndPlayAudio, { passive: true });
         });
+
+        if (btnEnableAudio) {
+            btnEnableAudio.addEventListener('click', (e) => {
+                e.stopPropagation();
+                unlockAndPlayAudio();
+            });
+        }
 
         // Setup the ScrollTrigger to pin and scrub (Exact original pin parameters)
         ScrollTrigger.create({

@@ -1102,6 +1102,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     
+    <!-- Floating Audio Autoplay Notification Toast -->
+    <div id="audio-autoplay-toast" class="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#2A2420]/90 backdrop-blur-md border border-[#D6BD9F]/40 text-[#F9F6F1] px-5 py-3 rounded-full shadow-2xl transition-all duration-500 transform translate-y-20 opacity-0 pointer-events-none">
+        <span class="text-base animate-pulse">🎵</span>
+        <div class="flex flex-col">
+            <span class="text-xs font-bold text-[#D6BD9F]">After Hours - The Weeknd</span>
+            <span class="text-[10px] text-[#8E7E73]">Tap anywhere to enable sound</span>
+        </div>
+        <button id="btn-enable-audio" class="ml-2 bg-[#D6BD9F] text-[#1A1715] hover:bg-white text-[10px] font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider transition-colors cursor-pointer shadow-md">
+            Enable
+        </button>
+    </div>
+
     <!-- Background Work Audio Element -->
     <audio id="work-audio-element" src="assets/after_hours_the_weeknd.mp3" autoplay loop preload="auto" playsinline></audio>
 
