@@ -317,9 +317,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        let isWorkSectionActive = false;
+
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
+                    isWorkSectionActive = entry.isIntersecting;
                     if (entry.isIntersecting) {
                         playWorkAudio();
                     } else {
@@ -340,6 +343,19 @@ document.addEventListener('DOMContentLoaded', () => {
             link.addEventListener('click', () => {
                 pauseWorkAudio();
             });
+        });
+
+        // Resume background music automatically when returning back to the portfolio tab if still on #work
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && isWorkSectionActive) {
+                playWorkAudio();
+            }
+        });
+
+        window.addEventListener('focus', () => {
+            if (isWorkSectionActive) {
+                playWorkAudio();
+            }
         });
 
         // Setup the ScrollTrigger to pin and scrub (Exact layout pin parameters)
