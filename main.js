@@ -318,22 +318,32 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        // Setup the ScrollTrigger to pin, scrub, and reliably control audio active state
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        playWorkAudio();
+                    } else {
+                        pauseWorkAudio();
+                    }
+                });
+            },
+            {
+                threshold: 0.25
+            }
+        );
+
+        observer.observe(workSection);
+
+        // Setup the ScrollTrigger to pin and scrub (Exact layout pin parameters)
         ScrollTrigger.create({
             trigger: workSection,
-            start: "top 80%",
-            end: () => `+=${getScrollAmount() * -1 + window.innerHeight * 0.8}`,
+            start: "top top",
+            end: () => `+=${getScrollAmount() * -1}`, // The pin duration equals the scroll distance
             pin: true,
             animation: tween,
             scrub: 1, // Smooth scrubbing
-            invalidateOnRefresh: true, // Recalculate on resize
-            onToggle: (self) => {
-                if (self.isActive) {
-                    playWorkAudio();
-                } else {
-                    pauseWorkAudio();
-                }
-            }
+            invalidateOnRefresh: true // Recalculate on resize
         });
 
         // Entrance animation for cards when the section is reached
