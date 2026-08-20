@@ -299,10 +299,10 @@ document.addEventListener('DOMContentLoaded', () => {
             ease: "none"
         });
 
-        // Clean Scroll-Triggered Audio System using IntersectionObserver (#work section trigger)
+        // Clean Scroll-Triggered Audio Handlers for Selected Work section
         const playWorkAudio = () => {
             const audio = document.getElementById('workAudio');
-            if (audio) {
+            if (audio && audio.paused) {
                 audio.volume = 0.8;
                 audio.muted = false;
                 audio.play().catch((error) => {
@@ -313,37 +313,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const pauseWorkAudio = () => {
             const audio = document.getElementById('workAudio');
-            if (audio) {
+            if (audio && !audio.paused) {
                 audio.pause();
             }
         };
 
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        playWorkAudio();
-                    } else {
-                        pauseWorkAudio();
-                    }
-                });
-            },
-            {
-                threshold: 0.25
-            }
-        );
-
-        observer.observe(workSection);
-
-        // Setup the ScrollTrigger to pin and scrub (Exact original pin parameters)
+        // Setup the ScrollTrigger to pin, scrub, and reliably control audio active state
         ScrollTrigger.create({
             trigger: workSection,
-            start: "top top",
-            end: () => `+=${getScrollAmount() * -1}`, // The pin duration equals the scroll distance
+            start: "top 80%",
+            end: () => `+=${getScrollAmount() * -1 + window.innerHeight * 0.8}`,
             pin: true,
             animation: tween,
             scrub: 1, // Smooth scrubbing
-            invalidateOnRefresh: true // Recalculate on resize
+            invalidateOnRefresh: true, // Recalculate on resize
+            onToggle: (self) => {
+                if (self.isActive) {
+                    playWorkAudio();
+                } else {
+                    pauseWorkAudio();
+                }
+            }
         });
 
         // Entrance animation for cards when the section is reached
