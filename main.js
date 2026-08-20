@@ -300,6 +300,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Clean Scroll-Triggered Audio Handlers for Selected Work section
+        let isWorkIntersecting = false;
+
         const playWorkAudio = () => {
             const audio = document.getElementById('workAudio');
             if (audio && audio.paused) {
@@ -321,6 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
+                    isWorkIntersecting = entry.isIntersecting;
                     if (entry.isIntersecting) {
                         playWorkAudio();
                     } else {
@@ -329,11 +332,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             },
             {
-                threshold: 0.25
+                threshold: 0.1
             }
         );
 
         observer.observe(workSection);
+
+        // Re-attempt play on user scroll/motion if work section is currently active in viewport
+        const handleActiveMotion = () => {
+            if (isWorkIntersecting) {
+                playWorkAudio();
+            }
+        };
+
+        ['scroll', 'wheel', 'touchmove', 'touchstart', 'mousemove', 'pointermove', 'keydown', 'click'].forEach(evt => {
+            window.addEventListener(evt, handleActiveMotion, { passive: true });
+        });
 
         // Setup the ScrollTrigger to pin and scrub (Exact layout pin parameters)
         ScrollTrigger.create({
