@@ -512,9 +512,9 @@ function initCertificatesCarousel() {
             <div class="cert-card-inner group relative w-[300px] sm:w-[380px] md:w-[440px] bg-[#FDFBF7] border border-[#5C504A]/15 rounded-[2rem] p-5 sm:p-7 shadow-2xl transition-all duration-500 ease-out flex flex-col justify-between overflow-hidden">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#D6BD9F]/20 via-[#E1C1B6]/10 to-transparent rounded-bl-full pointer-events-none"></div>
 
-                <div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-[#1A1715] mb-5 border border-[#5C504A]/10 shadow-inner group-hover:shadow-xl transition-all duration-500">
-                    <img src="${cert.image}" alt="${cert.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                <div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-[#FAF7F2] mb-5 border border-[#5C504A]/10 shadow-inner group-hover:shadow-xl transition-all duration-500 flex items-center justify-center p-2">
+                    <img src="${cert.image}" alt="${cert.title}" class="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-700 ease-out">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 rounded-2xl">
                         <span class="text-xs font-bold text-white tracking-widest uppercase flex items-center gap-1.5">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                             View Certificate
@@ -613,7 +613,7 @@ function initCertificatesCarousel() {
                 card.style.zIndex = `30`;
                 card.style.pointerEvents = `auto`;
                 card.style.boxShadow = `0 25px 50px -12px rgba(92, 80, 74, 0.25)`;
-            } else if (diff === -1 || (currentIndex === 0 && i === total - 1)) {
+            } else if (diff === -1) {
                 // Left Neighbor Card
                 const xOffset = isMobile ? `-45%` : `-56%`;
                 const rot = isMobile ? `10deg` : `16deg`;
@@ -622,7 +622,7 @@ function initCertificatesCarousel() {
                 card.style.zIndex = `15`;
                 card.style.pointerEvents = `auto`;
                 card.style.boxShadow = `0 15px 30px -10px rgba(0, 0, 0, 0.15)`;
-            } else if (diff === 1 || (currentIndex === total - 1 && i === 0)) {
+            } else if (diff === 1) {
                 // Right Neighbor Card
                 const xOffset = isMobile ? `45%` : `56%`;
                 const rot = isMobile ? `-10deg` : `-16deg`;
