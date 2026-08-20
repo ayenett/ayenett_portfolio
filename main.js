@@ -299,36 +299,23 @@ document.addEventListener('DOMContentLoaded', () => {
             ease: "none"
         });
 
-        // Pure Scroll Unmute Engine (Zero click required, unmutes instantly on scroll)
-        const playWorkAudio = () => {
-            window.isWorkSectionActive = true;
-            const video = document.getElementById('workVideo');
+        // Clean Scroll-Triggered Audio Handler (#work section trigger via IntersectionObserver)
+        function playWorkAudio() {
             const audio = document.getElementById('workAudio');
-
-            if (video) {
-                video.volume = 0.8;
-                video.muted = false;
-                if (video.paused) video.play().catch(e => {});
+            if (audio && audio.paused) {
+                audio.play().catch((error) => {
+                    // Browser may block autoplay. Fail silently.
+                    console.debug('Autoplay was blocked by browser policy:', error);
+                });
             }
-            if (audio) {
-                audio.volume = 0.8;
-                audio.muted = false;
-                if (audio.paused) audio.play().catch(e => {});
-            }
-        };
+        }
 
-        const pauseWorkAudio = () => {
-            window.isWorkSectionActive = false;
-            const video = document.getElementById('workVideo');
+        function pauseWorkAudio() {
             const audio = document.getElementById('workAudio');
-
-            if (video) {
-                video.muted = true;
+            if (audio && !audio.paused) {
+                audio.pause();
             }
-            if (audio) {
-                audio.muted = true;
-            }
-        };
+        }
 
         const observer = new IntersectionObserver(
             (entries) => {
@@ -341,22 +328,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             },
             {
-                threshold: 0.05
+                threshold: 0.25
             }
         );
 
         observer.observe(workSection);
-
-        // Instant scroll unmute trigger
-        const handleScrollUnmute = () => {
-            if (window.isWorkSectionActive) {
-                playWorkAudio();
-            }
-        };
-
-        ['scroll', 'wheel', 'touchmove'].forEach(evt => {
-            window.addEventListener(evt, handleScrollUnmute, { passive: true });
-        });
 
         // Setup the ScrollTrigger to pin and scrub (Exact layout pin parameters)
         ScrollTrigger.create({
