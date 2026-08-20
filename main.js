@@ -27,39 +27,38 @@ document.addEventListener('DOMContentLoaded', () => {
     window.workAudio = workAudioEl || new Audio('assets/after_hours_the_weeknd.mp3');
     window.workAudio.preload = 'auto';
     window.workAudio.loop = true;
-    window.workAudio.volume = 0.8;
 
-    // Web Audio API Context for universal zero-click activation
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    let audioCtx = null;
+    // Create Web Audio Context Gain Node Pipeline for zero-restriction sound control
+    const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+    window.audioCtx = null;
+    window.gainNode = null;
     try {
-        if (AudioContextClass) {
-            audioCtx = new AudioContextClass();
+        if (AudioCtxClass) {
+            window.audioCtx = new AudioCtxClass();
+            const source = window.audioCtx.createMediaElementSource(window.workAudio);
+            window.gainNode = window.audioCtx.createGain();
+            window.gainNode.gain.value = 0; // Starts silent
+            source.connect(window.gainNode);
+            window.gainNode.connect(window.audioCtx.destination);
         }
-    } catch(e) {}
+    } catch(e) {
+        console.log("WebAudio init:", e);
+    }
 
-    // Auto-unmute and play on ANY user activity (mouse move, scroll, wheel, touch)
-    const forceZeroClickPlay = () => {
-        if (audioCtx && audioCtx.state === 'suspended') {
-            audioCtx.resume().catch(e => {});
+    // Force start playing immediately on load
+    window.startGlobalAudio = () => {
+        if (window.audioCtx && window.audioCtx.state === 'suspended') {
+            window.audioCtx.resume().catch(e => {});
         }
-        if (window.workAudio) {
-            window.workAudio.muted = false;
-            window.workAudio.volume = 0.8;
-            if (window.isWorkSectionActive && window.workAudio.paused) {
-                window.workAudio.play().catch(e => {
-                    // Muted autoplay fallback
-                    window.workAudio.muted = true;
-                    window.workAudio.play().then(() => {
-                        window.workAudio.muted = false;
-                    }).catch(err => {});
-                });
-            }
+        if (window.workAudio && window.workAudio.paused) {
+            window.workAudio.play().catch(e => {});
         }
     };
 
+    window.startGlobalAudio();
+
     ['mousemove', 'pointermove', 'scroll', 'wheel', 'touchmove', 'touchstart', 'click', 'mousedown', 'keydown'].forEach(evt => {
-        window.addEventListener(evt, forceZeroClickPlay, { passive: true });
+        window.addEventListener(evt, window.startGlobalAudio, { passive: true });
     });
 
     // 1. Reveal Animations for all sections
@@ -336,79 +335,32 @@ document.addEventListener('DOMContentLoaded', () => {
             ease: "none"
         });
 
-        // Audio playback handlers for Selected Work section (Instant Play & Instant Stop)
-        let isWorkSectionActive = false;
-        const workAudioToggleBtn = document.getElementById('work-audio-toggle');
-        const workAudioStatus = document.getElementById('work-audio-status');
-        const workAudioIcon = document.getElementById('work-audio-icon');
-
-        const updateAudioUI = (isPlaying) => {
-            if (workAudioStatus && workAudioIcon) {
-                if (isPlaying) {
-                    workAudioStatus.textContent = 'Playing';
-                    workAudioStatus.className = 'bg-[#D6BD9F] text-[#1A1715] text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider transition-colors';
-                    workAudioIcon.className = 'animate-bounce';
-                } else {
-                    workAudioStatus.textContent = 'Click to Play';
-                    workAudioStatus.className = 'bg-[#D6BD9F]/20 text-[#D6BD9F] text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider transition-colors';
-                    workAudioIcon.className = 'animate-pulse';
-                }
-            }
-        };
-
+        // Audio playback handlers for Selected Work section (Web Audio GainNode Zero-Click Control)
         const playWorkAudio = () => {
             window.isWorkSectionActive = true;
+            if (window.startGlobalAudio) window.startGlobalAudio();
+
+            if (window.gainNode && window.audioCtx) {
+                window.gainNode.gain.setValueAtTime(0.8, window.audioCtx.currentTime);
+            }
             if (window.workAudio) {
-                window.workAudio.muted = false;
                 window.workAudio.volume = 0.8;
+                window.workAudio.muted = false;
                 if (window.workAudio.paused) {
-                    window.workAudio.play().then(() => {
-                        updateAudioUI(true);
-                    }).catch(err => {
-                        updateAudioUI(false);
-                    });
-                } else {
-                    updateAudioUI(true);
+                    window.workAudio.play().catch(e => {});
                 }
             }
         };
 
         const pauseWorkAudio = () => {
             window.isWorkSectionActive = false;
+            if (window.gainNode && window.audioCtx) {
+                window.gainNode.gain.setValueAtTime(0, window.audioCtx.currentTime);
+            }
             if (window.workAudio) {
-                window.workAudio.pause();
-                window.workAudio.currentTime = 0;
-                updateAudioUI(false);
+                window.workAudio.volume = 0;
             }
         };
-
-        if (workAudioToggleBtn) {
-            workAudioToggleBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (window.workAudio) {
-                    if (window.workAudio.paused) {
-                        window.workAudio.muted = false;
-                        window.workAudio.volume = 0.8;
-                        window.workAudio.play().then(() => updateAudioUI(true)).catch(err => console.log(err));
-                    } else {
-                        window.workAudio.pause();
-                        updateAudioUI(false);
-                    }
-                }
-            });
-        }
-
-        // Resume audio playback immediately after user gesture if currently inside work section
-        const handleUserGesture = () => {
-            if (isWorkSectionActive && window.workAudio && window.workAudio.paused && !window.workAudio.muted) {
-                window.workAudio.volume = 0.8;
-                window.workAudio.play().then(() => updateAudioUI(true)).catch(err => console.log(err));
-            }
-        };
-
-        ['click', 'touchstart', 'mousedown', 'pointerdown', 'keydown', 'wheel'].forEach(evt => {
-            window.addEventListener(evt, handleUserGesture, { passive: true });
-        });
 
         // Setup the ScrollTrigger to pin and scrub (Exact original pin parameters)
         ScrollTrigger.create({
