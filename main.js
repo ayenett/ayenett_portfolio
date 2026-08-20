@@ -299,50 +299,34 @@ document.addEventListener('DOMContentLoaded', () => {
             ease: "none"
         });
 
-        // Clean Scroll-Triggered Audio Handlers for Selected Work section
-        let isAudioPreWarmed = false;
-
-        const preWarmWorkAudio = () => {
-            if (isAudioPreWarmed) return;
-            const audio = document.getElementById('workAudio');
-            if (audio) {
-                audio.volume = 0.8;
-                audio.muted = false;
-                const p = audio.play();
-                if (p !== undefined) {
-                    p.then(() => {
-                        isAudioPreWarmed = true;
-                        if (!window.isWorkSectionActive) {
-                            audio.pause();
-                        }
-                    }).catch(() => {});
-                }
-            }
-        };
-
-        ['click', 'pointerdown', 'touchstart', 'keydown', 'scroll', 'wheel', 'mousemove'].forEach(evt => {
-            window.addEventListener(evt, preWarmWorkAudio, { passive: true });
-        });
-
+        // Pure Scroll Unmute Engine (Zero click required, unmutes instantly on scroll)
         const playWorkAudio = () => {
             window.isWorkSectionActive = true;
+            const video = document.getElementById('workVideo');
             const audio = document.getElementById('workAudio');
+
+            if (video) {
+                video.volume = 0.8;
+                video.muted = false;
+                if (video.paused) video.play().catch(e => {});
+            }
             if (audio) {
                 audio.volume = 0.8;
                 audio.muted = false;
-                if (audio.paused) {
-                    audio.play().catch(error => {
-                        console.warn('Browser blocked autoplay:', error);
-                    });
-                }
+                if (audio.paused) audio.play().catch(e => {});
             }
         };
 
         const pauseWorkAudio = () => {
             window.isWorkSectionActive = false;
+            const video = document.getElementById('workVideo');
             const audio = document.getElementById('workAudio');
+
+            if (video) {
+                video.muted = true;
+            }
             if (audio) {
-                audio.pause();
+                audio.muted = true;
             }
         };
 
@@ -357,11 +341,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             },
             {
-                threshold: 0.1
+                threshold: 0.05
             }
         );
 
         observer.observe(workSection);
+
+        // Instant scroll unmute trigger
+        const handleScrollUnmute = () => {
+            if (window.isWorkSectionActive) {
+                playWorkAudio();
+            }
+        };
+
+        ['scroll', 'wheel', 'touchmove'].forEach(evt => {
+            window.addEventListener(evt, handleScrollUnmute, { passive: true });
+        });
 
         // Setup the ScrollTrigger to pin and scrub (Exact layout pin parameters)
         ScrollTrigger.create({
