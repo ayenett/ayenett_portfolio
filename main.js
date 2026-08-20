@@ -23,33 +23,43 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.registerPlugin(ScrollTrigger);
 
     // Global Work Section Audio Setup ("After Hours - The Weeknd")
-    window.workAudio = new Audio('assets/after_hours_the_weeknd.mp3');
+    const workAudioEl = document.getElementById('work-audio-element');
+    window.workAudio = workAudioEl || new Audio('assets/after_hours_the_weeknd.mp3');
     window.workAudio.preload = 'auto';
     window.workAudio.loop = true;
     window.workAudio.volume = 0.8;
-    window.workAudio.muted = true; // Muted init bypasses Chrome/Safari click restrictions
-    window.workAudio.load();
 
-    // Start muted audio immediately so browser stream is primed
-    if (window.workAudio.paused) {
-        window.workAudio.play().catch(e => {});
-    }
+    // Web Audio API Context for universal zero-click activation
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+    try {
+        if (AudioContextClass) {
+            audioCtx = new AudioContextClass();
+        }
+    } catch(e) {}
 
-    // Instantly unmute when scrolling, moving mouse, or touching screen
-    const unmuteOnInteraction = () => {
+    // Auto-unmute and play on ANY user activity (mouse move, scroll, wheel, touch)
+    const forceZeroClickPlay = () => {
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume().catch(e => {});
+        }
         if (window.workAudio) {
-            if (window.isWorkSectionActive) {
-                window.workAudio.muted = false;
-                window.workAudio.volume = 0.8;
-                if (window.workAudio.paused) {
-                    window.workAudio.play().catch(e => {});
-                }
+            window.workAudio.muted = false;
+            window.workAudio.volume = 0.8;
+            if (window.isWorkSectionActive && window.workAudio.paused) {
+                window.workAudio.play().catch(e => {
+                    // Muted autoplay fallback
+                    window.workAudio.muted = true;
+                    window.workAudio.play().then(() => {
+                        window.workAudio.muted = false;
+                    }).catch(err => {});
+                });
             }
         }
     };
 
-    ['scroll', 'wheel', 'touchmove', 'touchstart', 'pointermove', 'mousemove', 'keydown', 'click', 'mousedown'].forEach(evt => {
-        window.addEventListener(evt, unmuteOnInteraction, { passive: true });
+    ['mousemove', 'pointermove', 'scroll', 'wheel', 'touchmove', 'touchstart', 'click', 'mousedown', 'keydown'].forEach(evt => {
+        window.addEventListener(evt, forceZeroClickPlay, { passive: true });
     });
 
     // 1. Reveal Animations for all sections
