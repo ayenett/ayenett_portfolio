@@ -633,81 +633,107 @@
                     </div>
                 </div>
 
-                <!-- STAGE 3: Floating Certifications -->
-                <div class="relative max-w-[1400px] mx-auto px-8 lg:px-24 mt-40 mb-40 z-20">
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                <!-- STAGE 3: 3D Certificate Showcase Carousel -->
+                <div id="certificates-section" class="relative max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-24 my-28 sm:my-36 z-20 overflow-hidden">
+                    
+                    <!-- Section Header -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10 sm:mb-14">
+                        <div>
+                            <div class="inline-block border border-[#D6BD9F]/40 bg-[#F5EFEB]/60 backdrop-blur-md rounded-full px-4 py-1.5 mb-3 shadow-sm">
+                                <span class="text-[#8B6E64] font-bold text-[11px] tracking-[0.2em] uppercase">Certificates</span>
+                            </div>
+                            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-[#5C504A] tracking-tight leading-tight">
+                                Learning Journey <span class="text-[#D6BD9F] font-serif-cormorant italic font-normal">& Achievements</span>
+                            </h2>
+                            <p class="text-[#8E7E73] font-light text-sm sm:text-base mt-2 max-w-lg">
+                                A collection of my verified academic milestones, engineering credentials, and specialized achievements.
+                            </p>
+                        </div>
+
+                        <!-- View All Certificates Button -->
+                        <button id="btn-view-all-certs" class="group flex items-center gap-3 px-6 py-3 bg-[#FDFBF7] hover:bg-[#5C504A] text-[#5C504A] hover:text-[#FDFBF7] border border-[#5C504A]/15 rounded-full shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer">
+                            <span class="font-medium text-xs sm:text-sm tracking-wider uppercase">View All Certificates</span>
+                            <span class="w-8 h-8 rounded-full bg-[#F5EFEB] group-hover:bg-[#8E7E73]/30 flex items-center justify-center text-xs font-bold transition-transform duration-300 group-hover:translate-x-1">→</span>
+                        </button>
+                    </div>
+
+                    <!-- 3D Horizontal Carousel Container -->
+                    <div id="cert-carousel-wrapper" class="relative w-full py-6 sm:py-10 px-2 select-none touch-pan-y">
                         
-                        <div class="md:col-span-6 flex flex-col gap-8">
-                            <!-- Certificate 1 -->
-                            <div class="glass-card p-8 rounded-[2rem] shadow-2xl achievement-card relative overflow-hidden group" data-speed="0.95">
-                                <div class="absolute top-0 right-0 w-32 h-32 bg-[#E1C1B6]/10 rounded-bl-full -z-10 group-hover:bg-[#E1C1B6]/20 transition-colors duration-500"></div>
-                                <div class="flex items-start gap-6">
-                                    <div class="w-16 h-16 bg-[#5C504A] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-500">🥇</div>
-                                    <div>
-                                        <div class="flex items-center gap-3 mb-2">
-                                            <h4 class="text-2xl font-black text-[#5C504A]">Webflow Expert</h4>
-                                            <svg class="w-5 h-5 text-[#D6BD9F]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                                        </div>
-                                        <p class="text-[#8E7E73] font-light text-sm mb-4 leading-relaxed">Official certification demonstrating mastery in building complex, scalable Webflow architectures.</p>
-                                        <div class="flex items-center gap-2">
-                                            <span class="inline-block px-3 py-1 bg-[#F9F6F1] border border-[#5C504A]/10 rounded-full text-[10px] font-bold text-[#E1C1B6] uppercase tracking-widest">Issued 2023</span>
-                                            <span class="inline-block px-3 py-1 bg-[#F9F6F1] border border-[#5C504A]/10 rounded-full text-[10px] font-bold text-[#5C504A] uppercase tracking-widest hover:bg-[#E1C1B6] hover:text-white transition-colors cursor-pointer">Verify Credential</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Certificate 2 -->
-                            <div class="glass-card p-8 rounded-[2rem] shadow-2xl achievement-card relative overflow-hidden group ml-0 md:ml-12" data-speed="1.15">
-                                <div class="absolute top-0 right-0 w-32 h-32 bg-[#D6BD9F]/10 rounded-bl-full -z-10 group-hover:bg-[#D6BD9F]/20 transition-colors duration-500"></div>
-                                <div class="flex items-start gap-6">
-                                    <div class="w-16 h-16 bg-[#D6BD9F] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-500">📜</div>
-                                    <div>
-                                        <div class="flex items-center gap-3 mb-2">
-                                            <h4 class="text-2xl font-black text-[#5C504A]">Frontend Professional</h4>
-                                            <svg class="w-5 h-5 text-[#D6BD9F]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                                        </div>
-                                        <p class="text-[#8E7E73] font-light text-sm mb-4 leading-relaxed">Advanced certification in React, JavaScript architecture, and modern CSS frameworks.</p>
-                                        <div class="flex items-center gap-2">
-                                            <span class="inline-block px-3 py-1 bg-[#F9F6F1] border border-[#5C504A]/10 rounded-full text-[10px] font-bold text-[#D6BD9F] uppercase tracking-widest">Issued 2021</span>
-                                            <span class="inline-block px-3 py-1 bg-[#F9F6F1] border border-[#5C504A]/10 rounded-full text-[10px] font-bold text-[#5C504A] uppercase tracking-widest hover:bg-[#D6BD9F] hover:text-white transition-colors cursor-pointer">Verify Credential</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <!-- Navigation Arrows (Left/Right) -->
+                        <button id="cert-prev-btn" aria-label="Previous certificate" class="absolute left-1 sm:left-4 top-1/2 -translate-y-1/2 z-40 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-[#FDFBF7]/90 hover:bg-[#5C504A] text-[#5C504A] hover:text-white border border-[#5C504A]/15 shadow-xl backdrop-blur-md flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                        </button>
+                        <button id="cert-next-btn" aria-label="Next certificate" class="absolute right-1 sm:right-4 top-1/2 -translate-y-1/2 z-40 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-[#FDFBF7]/90 hover:bg-[#5C504A] text-[#5C504A] hover:text-white border border-[#5C504A]/15 shadow-xl backdrop-blur-md flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+
+                        <!-- Carousel Track (Perspective 3D Stage) -->
+                        <div id="cert-carousel-track" class="relative w-full min-h-[460px] sm:min-h-[520px] flex items-center justify-center perspective-stage overflow-visible">
+                            <!-- Dynamic Certificate Cards rendered by JS -->
                         </div>
 
-                        <div class="md:col-span-6 flex justify-center md:justify-end mt-12 md:mt-0">
-                            <div class="relative achievement-card" data-speed="1">
-                                <!-- Large decorative shape -->
-                                <div class="absolute -inset-4 bg-[#E1C1B6]/20 rounded-full filter blur-3xl w-full h-full"></div>
-                                <h3 class="text-5xl md:text-7xl font-black text-[#5C504A] leading-[1.1] relative z-10 text-center md:text-right">
-                                    Certified <br><span class="text-[#D6BD9F]">Professional</span> <br>Expertise.
-                                </h3>
+                        <!-- Pagination Dot Indicator -->
+                        <div id="cert-dots-container" class="flex justify-center items-center gap-2.5 mt-8 sm:mt-10">
+                            <!-- Dynamic dots rendered by JS -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- VIEW ALL CERTIFICATES MODAL / GALLERY -->
+                <div id="cert-gallery-modal" class="fixed inset-0 z-[99999] opacity-0 pointer-events-none transition-opacity duration-400 ease-out flex items-center justify-center p-4 sm:p-6 lg:p-10">
+                    <div id="cert-gallery-backdrop" class="absolute inset-0 bg-[#1A1715]/80 backdrop-blur-xl transition-opacity duration-400"></div>
+
+                    <div class="relative w-full max-w-6xl max-h-[90vh] bg-[#FDFBF7] border border-[#5C504A]/20 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col z-10 transform scale-95 transition-transform duration-400">
+                        <div class="p-6 sm:p-8 border-b border-[#5C504A]/10 flex justify-between items-center bg-[#F5EFEB]/60 backdrop-blur-md sticky top-0 z-20">
+                            <div>
+                                <span class="text-[10px] sm:text-xs font-bold text-[#8B6E64] tracking-[0.2em] uppercase">Verified Credentials</span>
+                                <h3 class="text-2xl sm:text-3xl font-black text-[#5C504A] tracking-tight">All Certificates</h3>
                             </div>
+                            <button id="cert-gallery-close" aria-label="Close modal" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#E1C1B6]/20 hover:bg-[#5C504A] text-[#5C504A] hover:text-white flex items-center justify-center transition-colors duration-300 cursor-pointer">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
                         </div>
 
+                        <div class="p-6 sm:p-8 lg:p-12 overflow-y-auto custom-scrollbar flex-1">
+                            <div id="cert-gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                                <!-- Dynamic certificate grid items rendered by JS -->
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- STAGE 4: Massive Statistics -->
-                <div id="statistics-stage" class="relative max-w-[1400px] mx-auto px-8 lg:px-24 py-20 z-20 mb-40 border-y border-[#5C504A]/10">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
-                        <div class="stat-block">
-                            <h2 class="text-6xl md:text-8xl font-black text-[#E1C1B6] mb-2"><span class="counter" data-target="80">0</span>+</h2>
-                            <p class="text-[#5C504A] font-bold uppercase tracking-widest text-sm">Projects Launched</p>
+                <!-- LIGHTBOX PREVIEW MODAL -->
+                <div id="cert-lightbox-modal" class="fixed inset-0 z-[100000] opacity-0 pointer-events-none transition-opacity duration-300 ease-out flex items-center justify-center p-4 sm:p-6 lg:p-12">
+                    <div id="cert-lightbox-backdrop" class="absolute inset-0 bg-[#0A0A0A]/90 backdrop-blur-2xl"></div>
+
+                    <div class="relative max-w-4xl w-full bg-[#FDFBF7] border border-[#5C504A]/20 rounded-[2rem] shadow-2xl overflow-hidden z-10 flex flex-col md:flex-row transform scale-95 transition-transform duration-300">
+                        <button id="cert-lightbox-close" aria-label="Close lightbox" class="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-black/60 hover:bg-black text-white backdrop-blur-md flex items-center justify-center transition-all duration-300 cursor-pointer">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+
+                        <div class="w-full md:w-3/5 bg-[#1A1715] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden group min-h-[300px] sm:min-h-[400px]">
+                            <img id="lightbox-img" src="" alt="Certificate" class="max-h-[75vh] w-auto object-contain rounded-lg shadow-2xl transition-transform duration-500 group-hover:scale-105">
+                            <button id="lightbox-prev" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black text-white flex items-center justify-center transition-all cursor-pointer">‹</button>
+                            <button id="lightbox-next" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black text-white flex items-center justify-center transition-all cursor-pointer">›</button>
                         </div>
-                        <div class="stat-block">
-                            <h2 class="text-6xl md:text-8xl font-black text-[#D6BD9F] mb-2"><span class="counter" data-target="7">0</span>+</h2>
-                            <p class="text-[#5C504A] font-bold uppercase tracking-widest text-sm">Years Experience</p>
-                        </div>
-                        <div class="stat-block">
-                            <h2 class="text-6xl md:text-8xl font-black text-[#8E7E73] mb-2"><span class="counter" data-target="15">0</span></h2>
-                            <p class="text-[#5C504A] font-bold uppercase tracking-widest text-sm">Awards Won</p>
-                        </div>
-                        <div class="stat-block">
-                            <h2 class="text-6xl md:text-8xl font-black text-[#5C504A] mb-2"><span class="counter" data-target="100">0</span>%</h2>
-                            <p class="text-[#5C504A] font-bold uppercase tracking-widest text-sm">Client Satisfaction</p>
+
+                        <div class="w-full md:w-2/5 p-6 sm:p-8 flex flex-col justify-between bg-[#FDFBF7]">
+                            <div>
+                                <span id="lightbox-category" class="inline-block px-3 py-1 bg-[#F5EFEB] border border-[#5C504A]/10 rounded-full text-[10px] font-bold text-[#8B6E64] uppercase tracking-widest mb-4">Category</span>
+                                <h4 id="lightbox-title" class="text-2xl font-black text-[#5C504A] leading-tight mb-2">Certificate Title</h4>
+                                <div class="flex items-center gap-2 mb-4 text-xs font-bold text-[#8E7E73]">
+                                    <span id="lightbox-issuer">Issuer</span>
+                                    <span>•</span>
+                                    <span id="lightbox-year">Year</span>
+                                </div>
+                                <p id="lightbox-desc" class="text-[#8E7E73] font-light text-sm leading-relaxed mb-6">Description</p>
+                            </div>
+                            <div class="pt-4 border-t border-[#5C504A]/10 flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-[#D6BD9F] uppercase tracking-widest">Verified Academic Credential</span>
+                                <span class="text-xs text-[#8B6E64]">✓ Official</span>
+                            </div>
                         </div>
                     </div>
                 </div>
