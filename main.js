@@ -26,27 +26,30 @@ document.addEventListener('DOMContentLoaded', () => {
     window.workAudio = new Audio('assets/after_hours_the_weeknd.mp3');
     window.workAudio.preload = 'auto';
     window.workAudio.loop = true;
-    window.workAudio.volume = 0.7;
+    window.workAudio.volume = 0.8;
+    window.workAudio.muted = true; // Muted init bypasses Chrome/Safari click restrictions
     window.workAudio.load();
 
-    // Global Audio Unlocker for Browser Autoplay Policies
-    let audioUnlocked = false;
-    const unlockAudioPermission = () => {
-        if (audioUnlocked) return;
-        audioUnlocked = true;
+    // Start muted audio immediately so browser stream is primed
+    if (window.workAudio.paused) {
+        window.workAudio.play().catch(e => {});
+    }
+
+    // Instantly unmute when scrolling, moving mouse, or touching screen
+    const unmuteOnInteraction = () => {
         if (window.workAudio) {
-            window.workAudio.play().then(() => {
-                if (!window.isWorkSectionActive) {
-                    window.workAudio.pause();
+            if (window.isWorkSectionActive) {
+                window.workAudio.muted = false;
+                window.workAudio.volume = 0.8;
+                if (window.workAudio.paused) {
+                    window.workAudio.play().catch(e => {});
                 }
-            }).catch(err => {
-                audioUnlocked = false;
-            });
+            }
         }
     };
 
-    ['click', 'touchstart', 'mousedown', 'keydown', 'pointerdown'].forEach(evt => {
-        document.addEventListener(evt, unlockAudioPermission, { passive: true });
+    ['scroll', 'wheel', 'touchmove', 'touchstart', 'pointermove', 'mousemove', 'keydown', 'click', 'mousedown'].forEach(evt => {
+        window.addEventListener(evt, unmuteOnInteraction, { passive: true });
     });
 
     // 1. Reveal Animations for all sections
@@ -327,22 +330,28 @@ document.addEventListener('DOMContentLoaded', () => {
         let isWorkSectionActive = false;
 
         const playWorkAudio = () => {
-            isWorkSectionActive = true;
-            if (window.workAudio && !window.workAudio.muted) {
-                window.workAudio.volume = 0.8; // Instant full target volume (no fade-in delay)
+            window.isWorkSectionActive = true;
+            if (window.workAudio) {
+                window.workAudio.muted = false;
+                window.workAudio.volume = 0.8;
                 if (window.workAudio.paused) {
                     window.workAudio.play().catch(err => {
-                        console.log("Work audio play waiting for user gesture:", err);
+                        // Fallback to playing muted then unmuting on scroll frame
+                        window.workAudio.muted = true;
+                        window.workAudio.play().then(() => {
+                            window.workAudio.muted = false;
+                        }).catch(e => {});
                     });
                 }
             }
         };
 
         const pauseWorkAudio = () => {
-            isWorkSectionActive = false;
+            window.isWorkSectionActive = false;
             if (window.workAudio) {
-                window.workAudio.pause(); // Instant stop (no delay)
+                window.workAudio.pause();
                 window.workAudio.currentTime = 0;
+                window.workAudio.muted = true;
             }
         };
 
