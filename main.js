@@ -22,13 +22,23 @@ gsap.ticker.lagSmoothing(0);
 document.addEventListener('DOMContentLoaded', () => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Global Work Section Audio Setup ("After Hours - The Weeknd")
+    // Global Work Section Audio & Video Setup ("After Hours - The Weeknd")
     const workAudioEl = document.getElementById('work-audio-element');
+    const workVideoEl = document.getElementById('work-video-element');
+    
     window.workAudio = workAudioEl || new Audio('assets/after_hours_the_weeknd.mp3');
-    window.workAudio.preload = 'auto';
-    window.workAudio.loop = true;
-    window.workAudio.volume = 0.8;
-    window.workAudio.load();
+    window.workVideo = workVideoEl;
+
+    if (window.workAudio) {
+        window.workAudio.preload = 'auto';
+        window.workAudio.loop = true;
+        window.workAudio.volume = 0.8;
+    }
+    if (window.workVideo) {
+        window.workVideo.preload = 'auto';
+        window.workVideo.loop = true;
+        window.workVideo.volume = 0.8;
+    }
 
     // 1. Reveal Animations for all sections
     const revealElements = document.querySelectorAll('.reveal-up');
@@ -324,25 +334,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const playWorkAudio = () => {
             window.isWorkSectionActive = true;
-            if (window.workAudio) {
-                window.workAudio.volume = 0.8;
-                window.workAudio.muted = false;
-                if (window.workAudio.paused) {
-                    window.workAudio.play().then(() => {
-                        hideAudioToast();
-                    }).catch(err => {
-                        console.log("Autoplay blocked by browser policy:", err);
-                        showAudioToast();
-                    });
-                } else {
+
+            const tryPlay = (mediaEl) => {
+                if (!mediaEl) return Promise.reject();
+                mediaEl.volume = 0.8;
+                mediaEl.muted = false;
+                return mediaEl.play();
+            };
+
+            if (window.workVideo) {
+                tryPlay(window.workVideo).then(() => {
                     hideAudioToast();
-                }
+                }).catch(() => {
+                    if (window.workAudio) {
+                        tryPlay(window.workAudio).then(() => {
+                            hideAudioToast();
+                        }).catch(() => {
+                            showAudioToast();
+                        });
+                    } else {
+                        showAudioToast();
+                    }
+                });
+            } else if (window.workAudio) {
+                tryPlay(window.workAudio).then(() => {
+                    hideAudioToast();
+                }).catch(() => {
+                    showAudioToast();
+                });
             }
         };
 
         const pauseWorkAudio = () => {
             window.isWorkSectionActive = false;
             hideAudioToast();
+            if (window.workVideo) {
+                window.workVideo.pause();
+                window.workVideo.currentTime = 0;
+            }
             if (window.workAudio) {
                 window.workAudio.pause();
                 window.workAudio.currentTime = 0;
@@ -350,16 +379,21 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const unlockAndPlayAudio = () => {
-            if (window.isWorkSectionActive && window.workAudio && window.workAudio.paused) {
-                window.workAudio.volume = 0.8;
-                window.workAudio.muted = false;
-                window.workAudio.play().then(() => {
-                    hideAudioToast();
-                }).catch(e => {});
+            if (window.isWorkSectionActive) {
+                if (window.workVideo && window.workVideo.paused) {
+                    window.workVideo.volume = 0.8;
+                    window.workVideo.muted = false;
+                    window.workVideo.play().then(() => hideAudioToast()).catch(e => {});
+                }
+                if (window.workAudio && window.workAudio.paused) {
+                    window.workAudio.volume = 0.8;
+                    window.workAudio.muted = false;
+                    window.workAudio.play().then(() => hideAudioToast()).catch(e => {});
+                }
             }
         };
 
-        ['click', 'touchstart', 'pointerdown', 'keydown'].forEach(evt => {
+        ['mousemove', 'pointermove', 'scroll', 'wheel', 'touchmove', 'touchstart', 'click', 'pointerdown', 'keydown'].forEach(evt => {
             window.addEventListener(evt, unlockAndPlayAudio, { passive: true });
         });
 
