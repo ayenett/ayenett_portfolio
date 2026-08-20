@@ -328,6 +328,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Audio playback handlers for Selected Work section (Instant Play & Instant Stop)
         let isWorkSectionActive = false;
+        const workAudioToggleBtn = document.getElementById('work-audio-toggle');
+        const workAudioStatus = document.getElementById('work-audio-status');
+        const workAudioIcon = document.getElementById('work-audio-icon');
+
+        const updateAudioUI = (isPlaying) => {
+            if (workAudioStatus && workAudioIcon) {
+                if (isPlaying) {
+                    workAudioStatus.textContent = 'Playing';
+                    workAudioStatus.className = 'bg-[#D6BD9F] text-[#1A1715] text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider transition-colors';
+                    workAudioIcon.className = 'animate-bounce';
+                } else {
+                    workAudioStatus.textContent = 'Click to Play';
+                    workAudioStatus.className = 'bg-[#D6BD9F]/20 text-[#D6BD9F] text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider transition-colors';
+                    workAudioIcon.className = 'animate-pulse';
+                }
+            }
+        };
 
         const playWorkAudio = () => {
             window.isWorkSectionActive = true;
@@ -335,13 +352,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.workAudio.muted = false;
                 window.workAudio.volume = 0.8;
                 if (window.workAudio.paused) {
-                    window.workAudio.play().catch(err => {
-                        // Fallback to playing muted then unmuting on scroll frame
-                        window.workAudio.muted = true;
-                        window.workAudio.play().then(() => {
-                            window.workAudio.muted = false;
-                        }).catch(e => {});
+                    window.workAudio.play().then(() => {
+                        updateAudioUI(true);
+                    }).catch(err => {
+                        updateAudioUI(false);
                     });
+                } else {
+                    updateAudioUI(true);
                 }
             }
         };
@@ -351,15 +368,31 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.workAudio) {
                 window.workAudio.pause();
                 window.workAudio.currentTime = 0;
-                window.workAudio.muted = true;
+                updateAudioUI(false);
             }
         };
+
+        if (workAudioToggleBtn) {
+            workAudioToggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (window.workAudio) {
+                    if (window.workAudio.paused) {
+                        window.workAudio.muted = false;
+                        window.workAudio.volume = 0.8;
+                        window.workAudio.play().then(() => updateAudioUI(true)).catch(err => console.log(err));
+                    } else {
+                        window.workAudio.pause();
+                        updateAudioUI(false);
+                    }
+                }
+            });
+        }
 
         // Resume audio playback immediately after user gesture if currently inside work section
         const handleUserGesture = () => {
             if (isWorkSectionActive && window.workAudio && window.workAudio.paused && !window.workAudio.muted) {
                 window.workAudio.volume = 0.8;
-                window.workAudio.play().catch(err => console.log("User gesture audio play:", err));
+                window.workAudio.play().then(() => updateAudioUI(true)).catch(err => console.log(err));
             }
         };
 
