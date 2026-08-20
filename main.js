@@ -336,10 +336,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const pauseWorkAudio = () => {
             window.isWorkSectionActive = false;
             if (window.workVideo) {
-                window.workVideo.muted = true;
+                window.workVideo.pause();
+                window.workVideo.currentTime = 0;
             }
             if (window.workAudio) {
-                window.workAudio.muted = true;
+                window.workAudio.pause();
+                window.workAudio.currentTime = 0;
             }
         };
 
