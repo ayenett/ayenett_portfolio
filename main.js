@@ -300,7 +300,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Clean Scroll-Triggered Audio Handlers for Selected Work section
+        let isAudioPreWarmed = false;
+
+        const preWarmWorkAudio = () => {
+            if (isAudioPreWarmed) return;
+            const audio = document.getElementById('workAudio');
+            if (audio) {
+                audio.volume = 0.8;
+                audio.muted = false;
+                const p = audio.play();
+                if (p !== undefined) {
+                    p.then(() => {
+                        isAudioPreWarmed = true;
+                        if (!window.isWorkSectionActive) {
+                            audio.pause();
+                        }
+                    }).catch(() => {});
+                }
+            }
+        };
+
+        ['click', 'pointerdown', 'touchstart', 'keydown', 'scroll', 'wheel', 'mousemove'].forEach(evt => {
+            window.addEventListener(evt, preWarmWorkAudio, { passive: true });
+        });
+
         const playWorkAudio = () => {
+            window.isWorkSectionActive = true;
             const audio = document.getElementById('workAudio');
             if (audio) {
                 audio.volume = 0.8;
@@ -314,9 +339,10 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const pauseWorkAudio = () => {
+            window.isWorkSectionActive = false;
             const audio = document.getElementById('workAudio');
             if (audio) {
-                audio.muted = true;
+                audio.pause();
             }
         };
 
@@ -331,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             },
             {
-                threshold: 0.05
+                threshold: 0.1
             }
         );
 
