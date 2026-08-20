@@ -27,39 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.workAudio = workAudioEl || new Audio('assets/after_hours_the_weeknd.mp3');
     window.workAudio.preload = 'auto';
     window.workAudio.loop = true;
-
-    // Create Web Audio Context Gain Node Pipeline for zero-restriction sound control
-    const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
-    window.audioCtx = null;
-    window.gainNode = null;
-    try {
-        if (AudioCtxClass) {
-            window.audioCtx = new AudioCtxClass();
-            const source = window.audioCtx.createMediaElementSource(window.workAudio);
-            window.gainNode = window.audioCtx.createGain();
-            window.gainNode.gain.value = 0; // Starts silent
-            source.connect(window.gainNode);
-            window.gainNode.connect(window.audioCtx.destination);
-        }
-    } catch(e) {
-        console.log("WebAudio init:", e);
-    }
-
-    // Force start playing immediately on load
-    window.startGlobalAudio = () => {
-        if (window.audioCtx && window.audioCtx.state === 'suspended') {
-            window.audioCtx.resume().catch(e => {});
-        }
-        if (window.workAudio && window.workAudio.paused) {
-            window.workAudio.play().catch(e => {});
-        }
-    };
-
-    window.startGlobalAudio();
-
-    ['mousemove', 'pointermove', 'scroll', 'wheel', 'touchmove', 'touchstart', 'click', 'mousedown', 'keydown'].forEach(evt => {
-        window.addEventListener(evt, window.startGlobalAudio, { passive: true });
-    });
+    window.workAudio.volume = 0.8;
+    window.workAudio.load();
 
     // 1. Reveal Animations for all sections
     const revealElements = document.querySelectorAll('.reveal-up');
@@ -335,32 +304,38 @@ document.addEventListener('DOMContentLoaded', () => {
             ease: "none"
         });
 
-        // Audio playback handlers for Selected Work section (Web Audio GainNode Zero-Click Control)
+        // Audio playback handlers for Selected Work section
         const playWorkAudio = () => {
             window.isWorkSectionActive = true;
-            if (window.startGlobalAudio) window.startGlobalAudio();
-
-            if (window.gainNode && window.audioCtx) {
-                window.gainNode.gain.setValueAtTime(0.8, window.audioCtx.currentTime);
-            }
             if (window.workAudio) {
                 window.workAudio.volume = 0.8;
                 window.workAudio.muted = false;
                 if (window.workAudio.paused) {
-                    window.workAudio.play().catch(e => {});
+                    window.workAudio.play().catch(err => console.log("Play waiting for motion:", err));
                 }
             }
         };
 
         const pauseWorkAudio = () => {
             window.isWorkSectionActive = false;
-            if (window.gainNode && window.audioCtx) {
-                window.gainNode.gain.setValueAtTime(0, window.audioCtx.currentTime);
-            }
             if (window.workAudio) {
-                window.workAudio.volume = 0;
+                window.workAudio.pause();
+                window.workAudio.currentTime = 0;
             }
         };
+
+        // Resume playing on ANY user motion (scroll, wheel, touch, move) when active
+        const triggerAudioOnMotion = () => {
+            if (window.isWorkSectionActive && window.workAudio && window.workAudio.paused) {
+                window.workAudio.volume = 0.8;
+                window.workAudio.muted = false;
+                window.workAudio.play().catch(e => {});
+            }
+        };
+
+        ['scroll', 'wheel', 'touchmove', 'touchstart', 'mousemove', 'pointermove', 'keydown', 'click'].forEach(evt => {
+            window.addEventListener(evt, triggerAudioOnMotion, { passive: true });
+        });
 
         // Setup the ScrollTrigger to pin and scrub (Exact original pin parameters)
         ScrollTrigger.create({
